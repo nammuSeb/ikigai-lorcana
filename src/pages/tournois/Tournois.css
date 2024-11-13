@@ -1,0 +1,68 @@
+
+.tournois-container {
+    color: white;
+    padding: 20px;
+}
+
+.tournois-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tournoi-card {
+    background: rgb(178,161,120);
+    background: linear-gradient(180deg, rgba(248,236,201,1)  0%, rgba(178,161,120,1) 100%);
+    color: #333;
+    padding: 16px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.tournoi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tournoi-status.cancelled {
+    color: red;
+    font-weight: bold;
+}
+
+.register-button {
+    background-color: #b2a178;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tournoi-title {
+    color: #312612 !important;
+    font-size: 1.4em;
+    margin: 10px 0;
+}
+
+.tournoi-type {
+    font-weight: bold;
+}
+
+.tournoi-type.fun {
+    color: #007bff;
+}
+
+.tournoi-type.construit {
+    color: #dc3545;
+}
+
+.tournoi-details {
+    font-size: 0.9em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cancelled .tournoi-card {
+    opacity: 0.5;
+}

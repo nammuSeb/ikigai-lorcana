@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    // autres options nécessaires...
+  },
+  "include": ["src"]
+}

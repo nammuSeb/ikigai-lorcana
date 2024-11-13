@@ -1,0 +1,90 @@
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+    border-radius: 5px;
+    border-bottom: 1px solid #f1ecc8;
+    border-top: 1px solid #ffffff;
+}
+
+.player-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #f1ecc8;
+    text-decoration: none;
+    margin-right: auto;
+}
+
+.player-points {
+    font-size: 0.9em;
+    color: #ffffff;
+    text-align: right;
+}
+
+.player hr {
+    border: none;
+    border-top: 1px solid #ddd; /* Couleur et épaisseur de la ligne */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.player-points {
+    display: flex;
+    gap: 5px; /* Espacement entre les pastilles */
+    margin-top: 10px;
+}
+
+
+.point_no {
+    height: 100%;
+    width: auto;
+    border-radius: 50%;
+    border: dashed 1px rgba(241, 236, 200, 0.62);
+}
+
+.week-navigation {
+    margin: 20px;
+}
+
+.semaine-name {
+    font-weight: bold;
+    color: #f1ecc8;
+    text-transform: uppercase;
+    padding: 10px;
+    font-size: 1.6em;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .leaderboard {
+        padding: 8px;
+        width: 100%;
+    }
+
+    .player {
+        padding: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .player-name {
+        font-size: 1.2em;
+        margin-bottom: 4px;
+    }
+
+    .player-points {
+        font-size: 1em;
+        color: #b3b3b3;
+    }
+}

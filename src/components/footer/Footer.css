@@ -1,0 +1,32 @@
+.footer {
+    display: flex;
+    justify-content: center;
+    max-width: 100vw;
+    height: 64px;
+    background: rgb(178,161,120);
+    background: linear-gradient(180deg, rgba(178,161,120,1) 0%, rgba(248,236,201,1) 100%);
+    border-top: 1px solid #cdc29f;
+    position: fixed; /* Fixe le footer en bas */
+    bottom: 0;       /* Place le footer en bas de l'écran */
+    width: 100%;     /* S'étend sur toute la largeur de l'écran */
+    z-index: 1000;   /* Assure que le footer reste au-dessus d'autres éléments */
+}
+
+.footer-item {
+    height: auto;
+    border-left: 1px solid #9a8d68;
+    border-right: 1px solid #F8ECC9FF;
+    cursor: pointer;
+    padding: 10px 0;
+    flex-grow: 1;    /* Chaque bouton prend tout l'espace */
+    text-align: center; /* Centre le texte dans chaque bouton */
+}
+
+.footer-item-focus {
+    background: rgb(178,161,120);
+    background: linear-gradient(180deg, rgba(248,236,201,1)  0%, rgba(178,161,120,1) 100%);
+}
+
+.footer-item img {
+    height: 32px;
+}

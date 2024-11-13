@@ -1,0 +1,99 @@
+.membre-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #f8f8f2;
+    background-color: #2a2a3c;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.membre-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.membre-header h2 {
+    font-size: 1.8em;
+    margin: 0;
+}
+
+.membre-rang {
+    font-size: 1.2em;
+    color: #aaa;
+}
+
+.membre-argent {
+    font-size: 2em;
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+.progress-section {
+    margin: 20px 0;
+}
+
+.progress-section h3 {
+    font-size: 1.4em;
+    color: #ffcc00;
+}
+
+.progress-bar-container {
+    background-color: #444;
+    border-radius: 5px;
+    position: relative;
+    height: 20px;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    background-color: #ffcc00;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.progress-text {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #333;
+    font-weight: bold;
+}
+
+.periode-text,
+.total-ligue-text {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-top: -10px;
+}
+
+.defis-section {
+    margin-top: 20px;
+}
+
+.defis-section h3 {
+    font-size: 1.4em;
+    color: #ffcc00;
+    margin-bottom: 10px;
+}
+
+.defi-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.defi-item.completed {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.defi-completed-icon {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+}

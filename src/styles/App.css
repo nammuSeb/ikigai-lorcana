@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
+
+body {
+    display: unset !important;
+    place-items: unset !important;
+    min-width: 320px;
+    min-height: 100vh;
+    width: 100vw !important;
+    font-family: "Montserrat", sans-serif !important;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+h2 {
+    color: #fff0d9 !important;
+}
+
+.app-content {
+    font-family: Arial, sans-serif;
+    color: white;
+    background-color: #242b43;
+    min-height: 100vh;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 92px;
+}
+
+
+.week-title {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #fff0d9 !important;
+    color: #312612 !important;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.header-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+}
+
+.decorative-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+    position: relative;
+}
+
+.decorative-line::after {
+    content: "";
+    flex-grow: 1;
+    height: 1.23px;
+    background-color: #fff0d9; /* Couleur de la ligne */
+    margin: 0px;
+}
+
+.center-decor {
+    width: 80px; /* Ajustez selon la largeur de l'image */
+    height: 13px; /* Ajustez selon la hauteur de l'image */
+    background-image: url('./divider_left2.svg'); /* Remplacez par le chemin de votre image */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.panel-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #bdc3c7;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.tab {
+    font-weight: bold;
+    cursor: pointer;
+    margin: 32px 0;
+}
+
+.tab.active {
+    border-bottom: 2px solid #fff0b9;
+}

@@ -1,0 +1,14 @@
+.header {
+    text-align: center;
+    padding: 20px;
+}
+
+.logo {
+    height: 30vh;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 1.5rem;
+    color: #ffcc00;
+}
