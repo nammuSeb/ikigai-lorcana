@@ -52,12 +52,21 @@ const Catalogue: React.FC = () => {
                     <div key={card.id} className={`catalogue-card ${card.stock < 1 ? 'sold-out' : ''}`} onClick={() => openModal(card)}>
                         <div className="card-info">
                             <div className="card-header">
-                                <h2 style={{ fontSize: '1.2em', marginBottom: '.2rem' }}>{card.nom}</h2>
+                                <h5 style={{ fontSize: '1.0em !important', marginBottom: '.2rem' }}>{card.nom}</h5>
                                 <span className="card-series">{card.serie} - {card.numero}</span>
                             </div>
                         </div>
                         <div className="stock">{card.stock}</div>
-                        <img src={`http://localhost:3000/uploads/${card.image_url}`} alt={card.nom} className="card-image" />
+                        <img
+                            src={
+                                card.image_url.startsWith("http")
+                                    ? card.image_url // Use the absolute URL as-is if it starts with "http"
+                                    : `http://localhost:3000/uploads/${card.image_url}` // Otherwise, construct the relative path
+                            }
+                            alt={card.nom}
+                            className="card-image"
+                        />
+
                         <div className="card-info">
                             <div className="card-details">
                                 <span className="card-language">
@@ -83,7 +92,16 @@ const Catalogue: React.FC = () => {
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <button className="close-button" onClick={closeModal}>X</button>
-                        <img src={`http://localhost:3000/uploads/${selectedCard.image_url}`} alt={selectedCard.nom} className="modal-image" />
+                        <img
+                            src={
+                                selectedCard.image_url.startsWith("http")
+                                    ? selectedCard.image_url // Use the absolute URL if it starts with "http"
+                                    : `http://localhost:3000/uploads/${selectedCard.image_url}` // Otherwise, use the relative path
+                            }
+                            alt={selectedCard.nom}
+                            className="modal-image"
+                        />
+
                         {/*
                         <div className="modal-info">
                             <h2>{selectedCard.nom}</h2>

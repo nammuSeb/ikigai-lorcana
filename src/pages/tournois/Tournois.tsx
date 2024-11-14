@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Tournois.css';
+import { Link } from "react-router-dom";
 
 interface Tournoi {
     id: number;
@@ -13,18 +14,37 @@ interface Tournoi {
     location: string;
     lien: string;
     statut: string;
+    gagnant_id?: number;
+}
+
+interface Joueur {
+    id: number;
+    pseudo: string;
 }
 
 const Tournois: React.FC = () => {
     const [tournois, setTournois] = useState<Tournoi[]>([]);
     const [activeTab, setActiveTab] = useState<string>('a_venir');
+    const [joueurs, setJoueurs] = useState<Joueur[]>([]);
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/tournois?statut=${activeTab}`)
             .then((response) => response.json())
             .then((data) => setTournois(data))
             .catch((error) => console.error('Erreur lors de la récupération des tournois:', error));
+
+        // Récupérer les joueurs pour afficher le nom du gagnant si nécessaire
+        fetch('http://localhost:3000/api/joueurs')
+            .then((response) => response.json())
+            .then((data) => setJoueurs(data))
+            .catch((error) => console.error('Erreur lors de la récupération des joueurs:', error));
     }, [activeTab]);
+
+    // Trouver le nom du gagnant par son ID
+    const getGagnantName = (gagnantId: number | undefined) => {
+        const gagnant = joueurs.find(joueur => joueur.id === gagnantId);
+        return gagnant ? gagnant.pseudo : 'Non spécifié';
+    };
 
     return (
         <div className="tournois-container">
@@ -58,27 +78,53 @@ const Tournois: React.FC = () => {
             <div className="tournois-list">
                 {tournois.map((tournoi) => (
                     <div key={tournoi.id} className={`tournoi-card ${tournoi.statut === 'annule' ? 'cancelled' : ''}`}>
-                        <div className="tournoi-header">
-                            <span className="tournoi-date">{new Date(tournoi.date).toLocaleDateString()} - {tournoi.heure}</span>
-                            {tournoi.statut === 'annule' ? (
-                                <span className="tournoi-status cancelled">ANNULÉ</span>
-                            ) : (
-                                <button className="register-button">Je m'inscris !</button>
-                            )}
-                        </div>
-                        <h2 className="tournoi-title">
-                            <span className={`tournoi-type ${tournoi.type.toLowerCase()}`}>{tournoi.type.toUpperCase()}</span> {tournoi.nom}
-                        </h2>
-                        <p className="tournoi-description">{tournoi.description}</p>
-                        <div className="tournoi-details">
-                            <span>{tournoi.prix} CHF {tournoi.inclus && `(incl. ${tournoi.inclus})`}</span>
-                            <span>{tournoi.participants_max} Joueurs max.</span>
-                        </div>
+                        {activeTab === 'a_venir' ? (
+                            <Link to={tournoi.lien}>
+                                <TournoiCard tournoi={tournoi} />
+                            </Link>
+                        ) : (
+                            <div>
+                                <TournoiCard tournoi={tournoi} />
+                                {tournoi.statut === 'passe' && (
+                                    <div className="gagnant-info">
+                                        <img src="./winner.svg" alt="winner" style={{height: 24}}/> {getGagnantName(tournoi.gagnant_id)}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
         </div>
     );
 };
+
+// Composant TournoiCard pour simplifier le code et éviter la duplication
+const TournoiCard: React.FC<{ tournoi: Tournoi }> = ({ tournoi }) => (
+    <div className="tournoi-card-content">
+        <div className="tournoi-header">
+            <span className="tournoi-date">
+                {new Date(tournoi.date).toLocaleDateString()} - {tournoi.heure}
+            </span>
+            {tournoi.statut === 'annule' ? (
+                <span className="tournoi-status cancelled">ANNULÉ</span>
+            ) : tournoi.statut === 'a_venir' ? (
+                <button className="register-button">Je m'inscris !</button>
+            ) : null}
+
+        </div>
+        <h4 className="tournoi-title">
+            <span className={`chip tournoi-type ${tournoi.type.toLowerCase()}`}>
+                {tournoi.type.toUpperCase()}
+            </span>
+        </h4>
+        <h3 style={{ color: '#312612', fontWeight: 'bold' }}>{tournoi.nom}</h3>
+        <p className="tournoi-description">{tournoi.description}</p>
+        <div className="tournoi-details">
+            <span className="chip price-chip">{tournoi.prix} CHF</span>
+            <span className="chip max-participants-chip">{tournoi.participants_max} Joueurs max.</span>
+        </div>
+    </div>
+);
 
 export default Tournois;

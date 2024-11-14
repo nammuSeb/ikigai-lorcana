@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 interface Player {
     pseudo: string;
-    pointsByDay: number[];
+    pointsByDay: number[]; // Tableau de 10 points maximum pour chaque joueur
 }
 
 const Leaderboard: React.FC = () => {
@@ -16,18 +16,24 @@ const Leaderboard: React.FC = () => {
         fetch(`http://localhost:3000/api/classements/leaderboard?week=${currentWeek}`)
             .then((response) => response.json())
             .then((data) => {
-                // Calculez la somme des points pour chaque joueur et triez-les par ordre décroissant
-                const sortedPlayers = data
-                    .map((player: Player) => ({
-                        ...player,
-                        totalPoints: player.pointsByDay.reduce((sum, points) => sum + points, 0), // Somme des points
-                    }))
-                    .sort((a, b) => b.totalPoints - a.totalPoints); // Tri décroissant par totalPoints
+                console.log("Données brutes du backend :", data);
 
-                setPlayers(sortedPlayers);
+                const playersData = Array.isArray(data) ? data : data.players;
+                if (Array.isArray(playersData)) {
+                    const sortedPlayers = playersData
+                        .map((player: Player) => ({
+                            ...player,
+                            totalPoints: player.pointsByDay.reduce((sum, points) => sum + points, 0),
+                        }))
+                        .sort((a, b) => b.totalPoints - a.totalPoints);
+
+                    setPlayers(sortedPlayers);
+                } else {
+                    console.error("Format de données inattendu :", data);
+                }
             })
             .catch((error) => console.error("Erreur lors de la récupération des joueurs :", error));
-    }, [currentWeek]);
+    }, [currentWeek]); // Re-fetch quand `currentWeek` change
 
     const handlePreviousWeek = () => {
         setCurrentWeek((prevWeek) => Math.max(prevWeek - 1, 1));
@@ -49,12 +55,12 @@ const Leaderboard: React.FC = () => {
                 <div className="player" key={index}>
                     <Link to={`/membre/${player.pseudo}`}>
                         <span className="player-name">
-                            {index + 1}. <span style={{ color: '#fff' }}>{player.pseudo}</span> {/* - {player.totalPoints} pts */}
+                            {index + 1}. <span style={{ color: '#fff' }}>{player.pseudo}</span>
                         </span>
                         <div className="player-points">
-                            {player.pointsByDay.map((points, i) => (
+                            {Array.from({ length: 10 }).map((_, i) => (
                                 <div key={i} style={{ height: 36, width: 36 }}>
-                                    {points > 0 ? (
+                                    {i < player.totalPoints ? (
                                         <img
                                             src={"./point_yes.svg"}
                                             alt="point icon"

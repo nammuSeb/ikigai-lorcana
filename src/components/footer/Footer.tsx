@@ -27,11 +27,13 @@ const Footer: React.FC = () => {
                     <img src="./menu_icon_tournois.svg" alt="bouton tournois" />
                 </Link>
             </div>
+            {/*
             <div className={`footer-item ${location.pathname === '/compteur' ? 'footer-item-focus' : ''}`}>
                 <Link to="/compteur">
                     <img src="./menu_icon_compteur.svg" alt="bouton compteur" />
                 </Link>
             </div>
+            */}
         </footer>
     );
 };

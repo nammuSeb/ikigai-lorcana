@@ -2,66 +2,100 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Membre.css';
 
+interface Defi {
+    nom: string;
+    complete: boolean;
+}
+
 interface MembreData {
     pseudo: string;
+    nickname: string;
     rang: string;
     argent: number;
     points: number;
+    semaine: number;
     set_ligue: number;
     avatar_url: string;
+    progress_semaine?: number;
     progress_set?: number;
-    defis?: { nom: string; complete: boolean }[];
+    pointsByWeek?: { [key: number]: number };
+    defis?: Defi[];
+    session?: number;
+    league?: number;
 }
 
 const Membre: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
     const [membre, setMembre] = useState<MembreData | null>(null);
+    const [currentWeek, setCurrentWeek] = useState(1);
+    const [currentSession, setCurrentSession] = useState(1);
+
+    const fetchMembreData = () => {
+        if (!slug) return;
+        fetch(`http://localhost:3000/api/joueurs/slug/${slug}?week=${currentWeek}&session=${currentSession}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Fetched Membre Data:", data);
+                setMembre(data);
+            })
+            .catch((error) => console.error("Error fetching player data:", error));
+    };
 
     useEffect(() => {
-        console.log(slug);
-        fetch(`http://localhost:3000/api/joueurs/slug/${slug}`)
-            .then((response) => response.json())
-            .then((data) => setMembre({
-                ...data,
-                progress_semaine: data.progress_semaine ?? 0, // Valeur par défaut
-                progress_set: data.progress_set ?? 0,         // Valeur par défaut
-                defis: data.defis ?? []                        // Tableau vide par défaut
-            }))
-            .catch((error) => console.error("Erreur lors du chargement des données de l'utilisateur :", error));
-    }, [slug]);
+        fetchMembreData();
+    }, [slug, currentWeek, currentSession]);
+
+    const handlePreviousWeek = () => setCurrentWeek((prev) => Math.max(prev - 1, 1));
+    const handleNextWeek = () => setCurrentWeek((prev) => prev + 1);
+    const handlePreviousSession = () => setCurrentSession((prev) => Math.max(prev - 1, 1));
+    const handleNextSession = () => setCurrentSession((prev) => prev + 1);
 
     if (!membre) {
-        return <p>Chargement des données du membre...</p>;
+        return <p>Loading player data...</p>;
     }
 
     return (
         <div className="membre-container">
             <header className="membre-header">
                 <h2>{membre.pseudo}</h2>
-                <p className="membre-rang">{membre.rang}</p>
-                <div className="membre-argent">{membre.argent} ƒ</div>
+                <h4>{membre.nickname}</h4>
+                <div className="membre-argent">
+                    {membre.argent} <img src="/header_icon_flouze.svg" alt="Flouze icon" style={{ height: 32 }} />
+                </div>
             </header>
-            <section className="progress-section">
-                <h3>Semaine {membre.semaine}</h3>
-                <div className="progress-bar-container">
-                    <div className="progress-bar" style={{ width: `${membre.progress_semaine}%` }}></div>
-                    <span className="progress-text">{membre.progress_semaine}%</span>
+
+            <div className="session-navigation">
+                <button onClick={handlePreviousSession}>&lt;</button>
+                <span>Session {membre.session} (League {membre.league})</span>
+                <button onClick={handleNextSession}>&gt;</button>
+            </div>
+
+            <div className="week-navigation">
+                <button onClick={handlePreviousWeek}>&lt;</button>
+                <span>Week {currentWeek} of Session</span>
+                <button onClick={handleNextWeek}>&gt;</button>
+            </div>
+
+            {membre.pointsByWeek && membre.pointsByWeek[currentWeek] !== undefined ? (
+                <div>
+                    <h3>Points for Week {currentWeek}</h3>
+                    <div>Points: {membre.pointsByWeek[currentWeek]}</div>
                 </div>
-                <p className="periode-text">Période 1 sur 3 (40 pts)</p>
-                <div className="progress-bar-container">
-                    <div className="progress-bar" style={{ width: `${membre.progress_set}%` }}></div>
-                    <span className="progress-text">{membre.progress_set}%</span>
-                </div>
-                <p className="total-ligue-text">Total Ligue Set {membre.set_ligue}</p>
-            </section>
+            ) : (
+                <p>No data for this week.</p>
+            )}
+
             <section className="defis-section">
-                <h3>Défis de la semaine</h3>
-                {membre.defis.map((defi, index) => (
-                    <div key={index} className={`defi-item ${defi.complete ? 'completed' : ''}`}>
-                        <span>{defi.nom}</span>
-                        {defi.complete && <div className="defi-completed-icon">✓</div>}
-                    </div>
-                ))}
+                <h3>Weekly Challenges</h3>
+                {membre.defis?.length ? (
+                    membre.defis.map((defi, index) => (
+                        <div key={index} className={`defi-item ${defi.complete ? 'completed' : ''}`}>
+                            <span>{defi.nom}</span>
+                        </div>
+                    ))
+                ) : (
+                    <p>No challenges for this week.</p>
+                )}
             </section>
         </div>
     );
