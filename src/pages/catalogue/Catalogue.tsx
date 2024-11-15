@@ -19,7 +19,7 @@ const Catalogue: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // State to control modal visibility
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/catalogue')
+        fetch('http://server.inkigai.ch/api/catalogue')
             .then((response) => response.json())
             .then((data) => setCards(data))
             .catch((error) => console.error('Erreur lors de la récupération du catalogue:', error));
@@ -39,7 +39,7 @@ const Catalogue: React.FC = () => {
         <div className="catalogue-container">
             <div className="header-title">
                 <h1>Catalogue</h1>
-                <img src="./header_icon_catalogue.svg" alt="Icone tournois" style={{ width: 86 }} />
+                <img src="./header_icon_catalogue.svg" alt="Icone tournois" style={{ height: 86 }} />
             </div>
             <div className="decorative-line">
                 <div className="center-decor"></div>
@@ -61,7 +61,7 @@ const Catalogue: React.FC = () => {
                             src={
                                 card.image_url.startsWith("http")
                                     ? card.image_url // Use the absolute URL as-is if it starts with "http"
-                                    : `http://localhost:3000/uploads/${card.image_url}` // Otherwise, construct the relative path
+                                    : `http://server.inkigai.ch/uploads/${card.image_url}` // Otherwise, construct the relative path
                             }
                             alt={card.nom}
                             className="card-image"
@@ -96,7 +96,7 @@ const Catalogue: React.FC = () => {
                             src={
                                 selectedCard.image_url.startsWith("http")
                                     ? selectedCard.image_url // Use the absolute URL if it starts with "http"
-                                    : `http://localhost:3000/uploads/${selectedCard.image_url}` // Otherwise, use the relative path
+                                    : `http://server.inkigai.ch/uploads/${selectedCard.image_url}` // Otherwise, use the relative path
                             }
                             alt={selectedCard.nom}
                             className="modal-image"

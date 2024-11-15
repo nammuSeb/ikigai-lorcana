@@ -28,13 +28,13 @@ const Tournois: React.FC = () => {
     const [joueurs, setJoueurs] = useState<Joueur[]>([]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/tournois?statut=${activeTab}`)
+        fetch(`http://server.inkigai.ch/api/tournois?statut=${activeTab}`)
             .then((response) => response.json())
             .then((data) => setTournois(data))
             .catch((error) => console.error('Erreur lors de la récupération des tournois:', error));
 
         // Récupérer les joueurs pour afficher le nom du gagnant si nécessaire
-        fetch('http://localhost:3000/api/joueurs')
+        fetch('http://server.inkigai.ch/api/joueurs')
             .then((response) => response.json())
             .then((data) => setJoueurs(data))
             .catch((error) => console.error('Erreur lors de la récupération des joueurs:', error));
@@ -111,7 +111,7 @@ const TournoiCard: React.FC<{ tournoi: Tournoi }> = ({ tournoi }) => (
 
         </div>
         <h4 className="tournoi-title">
-            <span className={`chip tournoi-type ${tournoi.type.toLowerCase()}`}>
+            <span className={`chip tournoi-type`}>
                 {tournoi.type.toUpperCase()}
             </span>
         </h4>

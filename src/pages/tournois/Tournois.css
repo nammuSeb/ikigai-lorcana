@@ -73,7 +73,7 @@
     font-size: 0.95em;
 }
 
-.tournoi-type.fun {
+.tournoi-type {
    border: 1px solid #312612;
     color: #312612;
     padding: 4px 8px;
@@ -81,13 +81,6 @@
     font-weight: bold;
 }
 
-.tournoi-type.construit {
-    border: 1px solid #312612;
-    color: #312612;
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-weight: bold;
-}
 
 .tournoi-details {
     font-size: 0.9em;

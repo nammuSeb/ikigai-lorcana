@@ -32,7 +32,7 @@ const Membre: React.FC = () => {
 
     const fetchMembreData = () => {
         if (!slug) return;
-        fetch(`http://localhost:3000/api/joueurs/slug/${slug}?week=${currentWeek}&session=${currentSession}`)
+        fetch(`http://server.inkigai.ch/api/joueurs/slug/${slug}?week=${currentWeek}&session=${currentSession}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log("Fetched Membre Data:", data);

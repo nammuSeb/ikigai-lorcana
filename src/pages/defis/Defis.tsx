@@ -14,7 +14,7 @@ const Defis: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('arene'); // Onglet actif
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/defis/${activeTab}`)
+        fetch(`http://server.inkigai.ch/api/defis/${activeTab}`)
             .then((response) => response.json())
             .then((data) => setDefis(data))
             .catch((error) => console.error('Erreur lors de la récupération des défis:', error));
@@ -25,7 +25,7 @@ const Defis: React.FC = () => {
         <div className="defis-container">
             <div className="header-title">
                 <h1>Défis</h1>
-                <img src="./header_icon_tournois.svg" alt="Icone tournois" style={{width: 86}}/>
+                <img src="./header_icon_defis.svg" alt="Icone tournois" style={{height: 86}}/>
             </div>
             <div className="decorative-line">
                 <div className="center-decor"></div>
@@ -98,7 +98,16 @@ const Defis: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <p className="info-note">= Point(s) pour la semaine en cours uniquement</p>
+            {activeTab === 'arene' && (
+                <p className="info-note"><img src="defi_fixed.svg" alt="icon" style={{height: 24}}/> = Point(s) pour la
+                    semaine en cours uniquement</p>
+            )}
+            {activeTab === 'quete' && (
+                <p className="info-note"><img src="defi_flex.svg" alt="icon" style={{height: 24}}/> = Point(s) à mettre sur la semaine de votre choix !</p>
+            )}
+            {activeTab === 'defi_semaine' && (
+                <p className="info-note"><img src="defi_fixed.svg" alt="icon" style={{height: 24}}/> = Point(s) pour la semaine en cours uniquement</p>
+            )}
         </div>
     );
 };
