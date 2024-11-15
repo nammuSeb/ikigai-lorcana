@@ -71,9 +71,6 @@ const Tournois: React.FC = () => {
                 </span>
             </div>
 
-            <p className="tournois-description">
-                Texte présentation tournoi + gagner du Flouzeborn
-            </p>
 
             <div className="tournois-list">
                 {tournois.map((tournoi) => (

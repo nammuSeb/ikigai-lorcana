@@ -54,7 +54,7 @@ const Defis: React.FC = () => {
             <div className="defis-content">
                 {activeTab === 'defi_semaine' && (
                     <div className="info-box">
-                        Ces défis sont à terminer une fois par semaine et ils changent chaque semaine !
+                        Relevez ces défis hebdomadaires uniques qui changent à chaque semaine !
                     </div>
                 )}
                 {defis.map((defi) => (

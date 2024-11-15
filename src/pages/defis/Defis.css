@@ -48,8 +48,8 @@
 }
 
 .info-box {
-    border: 2px solid #fff0b9;
+    border: 1px solid #fff0b9;
     padding: 8px;
-    border-radius: 10px;
     margin-bottom: 10px;
+    text-align: center;
 }
