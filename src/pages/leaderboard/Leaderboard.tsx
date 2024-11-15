@@ -13,7 +13,13 @@ const Leaderboard: React.FC = () => {
     const [currentWeek, setCurrentWeek] = useState(1);
 
     useEffect(() => {
-        fetch(`http://server.inkigai.ch/api/classements/leaderboard?week=${currentWeek}`)
+        fetch(`http://server.inkigai.ch/api/classements/leaderboard?week=${currentWeek}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Origin': window.location.origin, // Inclut l'origine actuelle de la requête
+            },
+        })
             .then((response) => response.json())
             .then((data) => {
                 console.log("Données brutes du backend :", data);

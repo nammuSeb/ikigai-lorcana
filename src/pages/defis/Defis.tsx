@@ -14,7 +14,13 @@ const Defis: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('arene'); // Onglet actif
 
     useEffect(() => {
-        fetch(`http://server.inkigai.ch/api/defis/${activeTab}`)
+        fetch(`http://server.inkigai.ch/api/defis/${activeTab}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Origin': window.location.origin, // Inclut l'origine actuelle de la requête
+            },
+        })
             .then((response) => response.json())
             .then((data) => setDefis(data))
             .catch((error) => console.error('Erreur lors de la récupération des défis:', error));
