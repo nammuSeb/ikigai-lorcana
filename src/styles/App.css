@@ -72,7 +72,7 @@ button {
 .center-decor {
     width: 80px; /* Ajustez selon la largeur de l'image */
     height: 13px; /* Ajustez selon la hauteur de l'image */
-    background-image: url('./divider_left2.svg'); /* Remplacez par le chemin de votre image */
+    background-image: url('https://inkigai.ch/divider_left2.svg'); /* Remplacez par le chemin de votre image */
     background-size: cover;
     background-repeat: no-repeat;
 }

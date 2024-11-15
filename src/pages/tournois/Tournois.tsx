@@ -28,7 +28,7 @@ const Tournois: React.FC = () => {
     const [joueurs, setJoueurs] = useState<Joueur[]>([]);
 
     useEffect(() => {
-        fetch(`http://server.inkigai.ch/api/tournois?statut=${activeTab}`, {
+        fetch(`https://server.inkigai.ch/api/tournois?statut=${activeTab}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const Tournois: React.FC = () => {
             .catch((error) => console.error('Erreur lors de la récupération des tournois:', error));
 
         // Récupérer les joueurs pour afficher le nom du gagnant si nécessaire
-        fetch('http://server.inkigai.ch/api/joueurs')
+        fetch('https://server.inkigai.ch/api/joueurs')
             .then((response) => response.json())
             .then((data) => setJoueurs(data))
             .catch((error) => console.error('Erreur lors de la récupération des joueurs:', error));

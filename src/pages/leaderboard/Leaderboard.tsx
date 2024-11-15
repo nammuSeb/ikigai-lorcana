@@ -13,7 +13,7 @@ const Leaderboard: React.FC = () => {
     const [currentWeek, setCurrentWeek] = useState(1);
 
     useEffect(() => {
-        fetch(`http://server.inkigai.ch/api/classements/leaderboard?week=${currentWeek}`, {
+        fetch(`https://server.inkigai.ch/api/classements/leaderboard?week=${currentWeek}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

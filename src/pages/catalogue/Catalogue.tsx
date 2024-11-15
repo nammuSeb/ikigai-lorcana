@@ -19,7 +19,7 @@ const Catalogue: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // State to control modal visibility
 
     useEffect(() => {
-        fetch('http://server.inkigai.ch/api/catalogue')
+        fetch('https://server.inkigai.ch/api/catalogue')
             .then((response) => response.json())
             .then((data) => setCards(data))
             .catch((error) => console.error('Erreur lors de la récupération du catalogue:', error));
@@ -61,7 +61,7 @@ const Catalogue: React.FC = () => {
                             src={
                                 card.image_url.startsWith("http")
                                     ? card.image_url // Use the absolute URL as-is if it starts with "http"
-                                    : `http://server.inkigai.ch/uploads/${card.image_url}` // Otherwise, construct the relative path
+                                    : `https://server.inkigai.ch/uploads/${card.image_url}` // Otherwise, construct the relative path
                             }
                             alt={card.nom}
                             className="card-image"
@@ -96,7 +96,7 @@ const Catalogue: React.FC = () => {
                             src={
                                 selectedCard.image_url.startsWith("http")
                                     ? selectedCard.image_url // Use the absolute URL if it starts with "http"
-                                    : `http://server.inkigai.ch/uploads/${selectedCard.image_url}` // Otherwise, use the relative path
+                                    : `https://server.inkigai.ch/uploads/${selectedCard.image_url}` // Otherwise, use the relative path
                             }
                             alt={selectedCard.nom}
                             className="modal-image"

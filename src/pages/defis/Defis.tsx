@@ -14,7 +14,7 @@ const Defis: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('arene'); // Onglet actif
 
     useEffect(() => {
-        fetch(`http://server.inkigai.ch/api/defis/${activeTab}`, {
+        fetch(`https://server.inkigai.ch/api/defis/${activeTab}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
