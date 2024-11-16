@@ -44,14 +44,6 @@
     margin-top: 10px;
 }
 
-
-.point_no {
-    height: 100%;
-    width: auto;
-    border-radius: 50%;
-    border: dashed 1px rgba(241, 236, 200, 0.62);
-}
-
 .week-navigation {
     margin: 20px;
 }

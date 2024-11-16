@@ -31,7 +31,7 @@ const Defis: React.FC = () => {
         <div className="defis-container">
             <div className="header-title">
                 <h1>Défis</h1>
-                <img src="./header_icon_defis.svg" alt="Icone tournois" style={{height: 86}}/>
+                <img src="/header_icon_defis.svg" alt="Icone tournois" style={{height: 86}}/>
             </div>
             <div className="decorative-line">
                 <div className="center-decor"></div>

@@ -9,7 +9,6 @@ body {
     width: 100vw !important;
     font-family: "Montserrat", sans-serif !important;
     font-optical-sizing: auto;
-    font-weight: normal;
     font-style: normal;
 }
 
@@ -19,10 +18,11 @@ a {
 
 h2 {
     color: #fff0d9 !important;
+    font-size: 1.8em !important;
+    font-weight: bold !important;
 }
 
 .app-content {
-    font-family: Arial, sans-serif;
     color: white;
     background-color: #242b43;
     min-height: 100vh;
@@ -40,9 +40,11 @@ h2 {
 
 button {
     background-color: #fff0d9 !important;
+    background: linear-gradient(0deg, rgba(178, 161, 120, 1) 0%, rgba(248, 236, 201, 1) 100%);
     color: #312612 !important;
-    font-weight: bold;
+    font-weight: bold !important;
     font-size: x-large;
+    margin: 4px !important;
 }
 
 .header-title {
@@ -94,4 +96,12 @@ button {
 .tab.active {
     background-color: #fff0b9;
     color: #312612 !important;
+}
+
+.point_no {
+    height: 100%;
+    width: 36px;
+    border-radius: 50%;
+    border: dashed 1px rgba(241, 236, 200, 0.62);
+    background: rgb(43, 52, 82);
 }

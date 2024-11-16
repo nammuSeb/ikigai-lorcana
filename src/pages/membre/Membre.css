@@ -1,12 +1,4 @@
-
-h2 {
-    color: #fff !important;
-    font-weight: bold !important;
-    font-size: 1.8em !important;
-}
-
 .membre-container {
-    color: white;
     padding: 20px;
 }
 
@@ -14,121 +6,98 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
-.membre-argent {
-    font-size: 2.2em;
-    font-weight: bold;
-}
-
-.progress-section {
+.player-points {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-top: 20px;
 }
 
-.weekly-icons {
+.point-icon {
+    width: 36px;
+    height: 36px;
+}
+
+.week-navigation {
     display: flex;
-    gap: 5px;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
-.weekly-icon {
-    width: 24px;
-    height: 24px;
-    background-color: #5a4d3c;
-    border-radius: 50%;
+.points-area,
+.defis-area {
+    margin-top: 20px;
+    background-color: #2e3757;
+    padding: 4px; /* Plus de confort visuel */
+    border-radius: 12px; /* Adouci le rayon des coins */
 }
 
-.progress-bar-container {
-    background: #b2a178;
-    border-radius: 4px;
-    overflow: hidden;
-    height: 10px;
-    margin: 8px 0;
-    position: relative;
-}
-
-.progress-bar {
-    background: #312612;
-    height: 100%;
-    transition: width 0.4s ease;
-}
-
-.progress-text, .periode-text, .total-ligue-text {
-    font-size: 0.9em;
+.error-message {
+    color: #ff4d4d; /* Rouge plus doux */
+    font-size: 16px;
     text-align: center;
-    margin: 5px 0;
-}
-
-.defis-section {
-    margin-top: 30px;
 }
 
 .defi-item {
+    border: 1px solid #f1ecc8;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    /* background-color: #282c34; */
     display: flex;
-    align-items: center;
-    margin: 10px 0;
-}
-
-.defi-item .defi-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    margin-right: 10px;
-    background-color: #ccc;
-}
-
-.defi-item.completed .defi-icon {
-    background-color: #b2a178;
-}
-
-.defi-item.completed-icon {
-    background-image: url('/path/to/check-icon.svg'); /* Replace with your check icon path */
-    background-size: cover;
-}
-
-.weekly-icons {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-}
-
-.icon-complete {
-    width: 36px;
-    height: 36px;
-    background-color: #5a3e85; /* Dark purple */
-    border: 2px solid #d4af37; /* Gold border */
-    border-radius: 50%;
-}
-
-.icon-incomplete {
-    width: 36px;
-    height: 36px;
-    border: 2px dashed #b0b0b0; /* Light gray dashed border */
-    border-radius: 50%;
-    background-color: transparent;
-}
-
-.defi-item {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    margin: 4px 0;
+    flex-direction: column;
+    gap: 8px; /* Espacement optimisé */
 }
 
 .defi-item.completed {
-    background-color: #d4edda;
-    color: #155724;
+
 }
 
-.defi-icon {
-    width: 16px;
-    height: 16px;
+.defi-header {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #f1ecc8;
+    display: flex;
+    align-items: center;
+}
+
+.defi-title {
+    margin: 0;
+}
+
+.defi-details {
+    font-size: 0.9em;
+    color: #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.defi-description,
+.defi-points {
+    margin: 0;
+}
+
+.defi-progress {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.point-icon {
+    width: 36px;
+    height: 36px;
+}
+
+.point_no {
+    width: 36px;
+    height: 36px;
+    border: 2px dashed #f1ecc8;
     border-radius: 50%;
-    background-color: #ccc;
-    margin-right: 8px;
-}
-
-.defi-icon.completed-icon {
-    background-color: #28a745;
+    background-color: transparent;
 }

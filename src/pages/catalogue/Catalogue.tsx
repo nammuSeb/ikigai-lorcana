@@ -39,7 +39,7 @@ const Catalogue: React.FC = () => {
         <div className="catalogue-container">
             <div className="header-title">
                 <h1>Catalogue</h1>
-                <img src="./header_icon_catalogue.svg" alt="Icone tournois" style={{ height: 86 }} />
+                <img src="/header_icon_catalogue.svg" alt="Icone tournois" style={{ height: 86 }} />
             </div>
             <div className="decorative-line">
                 <div className="center-decor"></div>
