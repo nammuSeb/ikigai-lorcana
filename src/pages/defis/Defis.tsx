@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import './Defis.css';
 import { useSearchParams } from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface Defi {
     id: number;
     nom: string;
@@ -22,7 +24,7 @@ const Defis: React.FC = () => {
         const fetchDefis = async () => {
             try {
                 // Construire l'URL avec le type de défi et la semaine
-                const url = new URL(`http://localhost:3000/api/defis`);
+                const url = new URL(`${API_BASE_URL}/api/defis`);
                 url.pathname += `/${activeTab}`;
                 url.searchParams.append('week', currentWeek.toString());
 

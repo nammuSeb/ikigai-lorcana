@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './Tournois.css';
 import { Link } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface Tournoi {
     id: number;
     nom: string;
@@ -28,7 +30,7 @@ const Tournois: React.FC = () => {
     const [joueurs, setJoueurs] = useState<Joueur[]>([]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/tournois?statut=${activeTab}`, {
+        fetch(`${API_BASE_URL}/api/tournois?statut=${activeTab}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +41,7 @@ const Tournois: React.FC = () => {
             .then((data) => setTournois(data))
             .catch((error) => console.error('Erreur lors de la récupération des tournois:', error));
 
-        fetch('http://localhost:3000/api/joueurs')
+        fetch(`${API_BASE_URL}/api/joueurs`)
             .then((response) => response.json())
             .then((data) => setJoueurs(data))
             .catch((error) => console.error('Erreur lors de la récupération des joueurs:', error));

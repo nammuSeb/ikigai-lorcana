@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Background: React.FC = () => {
     const [settings, setSettings] = useState({
@@ -9,7 +10,7 @@ const Background: React.FC = () => {
 
     useEffect(() => {
         // Récupérer les paramètres du backend
-        fetch('http://localhost:3000/api/parametres/background-settings')
+        fetch(`${API_BASE_URL}/api/parametres/background-settings`)
             .then((res) => res.json())
             .then((data) => setSettings({
                 backgroundImageUrl: data.background_image_url || '',

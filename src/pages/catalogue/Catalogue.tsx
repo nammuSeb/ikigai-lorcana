@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Catalogue.css';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 interface Card {
     id: number;
@@ -109,7 +110,7 @@ const Catalogue: React.FC = () => {
     });
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/catalogue')
+        fetch(`${API_BASE_URL}/api/catalogue`)
             .then((response) => response.json())
             .then((data) => {
                 setCards(data);

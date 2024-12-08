@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import Header from "../../components/header/Header";
 import './reglement.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface ReglementSection {
     id: number;
     section: string;
@@ -14,7 +16,7 @@ const Reglement: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/reglement')
+        fetch(`${API_BASE_URL}/api/reglement`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Erreur lors de la récupération des données');

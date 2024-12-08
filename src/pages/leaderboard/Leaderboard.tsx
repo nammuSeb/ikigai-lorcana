@@ -4,6 +4,8 @@ import Description from '../../components/description/';
 import './Leaderboard.css';
 import {Link, useSearchParams} from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface Player {
     pseudo: string;
     nickname: string;
@@ -56,7 +58,7 @@ const Leaderboard: React.FC = () => {
     }, [searchParams, setSearchParams]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/classements/leaderboard?week=${currentWeek}`, {
+        fetch(`${API_BASE_URL}/api/classements/leaderboard?week=${currentWeek}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {useParams, Link, useSearchParams} from "react-router-dom";
 import "./Membre.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface WeeklyPoints {
     points: number;
     startDate: string;
@@ -58,8 +60,8 @@ const Membre: React.FC = () => {
         try {
             setLoading(true);
             const [playerResponse, defisResponse] = await Promise.all([
-                fetch(`http://localhost:3000/api/joueurs/slug/${slug}?week=${currentWeek}`),
-                fetch(`http://localhost:3000/api/defis/slug/${slug}?week=${currentWeek}`)
+                fetch(`${API_BASE_URL}/api/joueurs/slug/${slug}?week=${currentWeek}`),
+                fetch(`${API_BASE_URL}/api/defis/slug/${slug}?week=${currentWeek}`)
             ]);
 
             if (!playerResponse.ok) {
