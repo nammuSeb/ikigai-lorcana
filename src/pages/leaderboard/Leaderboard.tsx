@@ -195,6 +195,7 @@ const Leaderboard: React.FC = () => {
                 </div>
             </div>
 
+            {/*
             <div className="container">
                 <div className="progress" style={{height: '25px', width: '90vw'}}>
                     <div
@@ -208,6 +209,7 @@ const Leaderboard: React.FC = () => {
                     </div>
                 </div>
             </div>
+            */}
 
             <div className="filters-container">
                 <div className="search-container">

@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {useParams, Link, useSearchParams} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Link, useSearchParams } from "react-router-dom";
+import DefisJoueur from './DefisJoueur';
 import "./Membre.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -15,6 +16,7 @@ interface Defi {
     nom: string;
     description: string;
     points: number;
+    points_type: string;
     completed: boolean;
 }
 
@@ -38,76 +40,58 @@ const getCurrentWeek = (): number => {
 };
 
 const Membre: React.FC = () => {
-    const {slug} = useParams<{ slug: string }>();
+    const { slug } = useParams<{ slug: string }>();
     const [searchParams] = useSearchParams();
     const [membre, setMembre] = useState<MembreData | null>(null);
     const [currentWeek, setCurrentWeek] = useState(getCurrentWeek);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
-    const currentWeekFromURL = searchParams.get('week');
-
     useEffect(() => {
-        if (currentWeekFromURL) {
-            const week = parseInt(currentWeekFromURL, 10);
+        const weekFromURL = searchParams.get('week');
+        if (weekFromURL) {
+            const week = parseInt(weekFromURL, 10);
             if (week >= 1 && week <= 4) {
                 setCurrentWeek(week);
             }
         }
-    }, [currentWeekFromURL]);
-
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const [playerResponse, defisResponse] = await Promise.all([
-                fetch(`${API_BASE_URL}/api/joueurs/slug/${slug}?week=${currentWeek}`),
-                fetch(`${API_BASE_URL}/api/defis/slug/${slug}?week=${currentWeek}`)
-            ]);
-
-            if (!playerResponse.ok) {
-                throw new Error("Erreur lors du chargement des données du joueur.");
-            }
-
-            const playerData = await playerResponse.json();
-            let defisData = {defis: []};
-
-            if (defisResponse.ok) {
-                defisData = await defisResponse.json();
-            }
-
-            // Dédupliquer les défis
-            const uniqueDefis = Array.from(
-                new Set(defisData.defis.map((d: Defi) => d.id))
-            ).map(id => defisData.defis.find((d: Defi) => d.id === id));
-
-            setMembre({
-                ...playerData,
-                defis: uniqueDefis
-            });
-            setError(null);
-        } catch (err) {
-            console.error("Erreur de chargement :", err);
-            setError((err as Error).message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    }, [searchParams]);
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const [playerResponse, defisResponse] = await Promise.all([
+                    fetch(`${API_BASE_URL}/api/joueurs/slug/${slug}?week=${currentWeek}`),
+                    fetch(`${API_BASE_URL}/api/defis/player/${slug}?week=${currentWeek}`)
+                ]);
+
+                if (!playerResponse.ok) {
+                    throw new Error("Erreur lors du chargement des données du joueur.");
+                }
+
+                const playerData = await playerResponse.json();
+                let defisData = { defis: [] };
+
+                if (defisResponse.ok) {
+                    defisData = await defisResponse.json();
+                }
+
+                setMembre({
+                    ...playerData,
+                    defis: defisData.defis
+                });
+                setError(null);
+            } catch (err) {
+                console.error("Erreur de chargement :", err);
+                setError((err as Error).message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchData();
     }, [slug, currentWeek]);
-
-    const handlePreviousWeek = () => {
-        if (currentWeek > 1) {
-            setCurrentWeek(prev => prev - 1);
-        }
-    };
-
-    const handleNextWeek = () => {
-        if (currentWeek < MAX_WEEKS) {
-            setCurrentWeek(prev => prev + 1);
-        }
-    };
 
     if (loading) return <div className="loading-container">Chargement des données...</div>;
     if (error) return <div className="error-message">{error}</div>;
@@ -117,7 +101,7 @@ const Membre: React.FC = () => {
 
     return (
         <div className="membre-container">
-            <div style={{display: 'flex', justifyContent: 'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Link
                     to={`/?week=${currentWeek}`}
                     className="back-to-leaderboard"
@@ -134,7 +118,7 @@ const Membre: React.FC = () => {
                 </div>
                 <div className="membre-argent">
                     <span>{membre.argent}</span>
-                    <img src="/header_icon_flouze.svg" alt="Flouze icon"/>
+                    <img src="/header_icon_flouze.svg" alt="Flouze icon" />
                 </div>
             </header>
 
@@ -143,30 +127,26 @@ const Membre: React.FC = () => {
             </div>
 
             <section className="points-section">
-                <div className="points-header">
-                    <div className="week-navigation-row">
-                        <button
-                            onClick={handlePreviousWeek}
-                            disabled={currentWeek === 1}
-                            className={`nav-button ${currentWeek === 1 ? 'disabled' : ''}`}
-                        >
-                            &lt;
-                        </button>
-                        <h3 className="section-title">Semaine {currentWeek}</h3>
-                        <button
-                            onClick={handleNextWeek}
-                            disabled={currentWeek === MAX_WEEKS}
-                            className={`nav-button ${currentWeek === MAX_WEEKS ? 'disabled' : ''}`}
-                        >
-                            &gt;
-                        </button>
-                    </div>
+                <div className="week-navigation-row">
+                    <button
+                        onClick={() => currentWeek > 1 && setCurrentWeek(prev => prev - 1)}
+                        disabled={currentWeek === 1}
+                        className={`nav-button ${currentWeek === 1 ? 'disabled' : ''}`}
+                    >
+                        &lt;
+                    </button>
+                    <h3 className="section-title">Semaine {currentWeek}</h3>
+                    <button
+                        onClick={() => currentWeek < MAX_WEEKS && setCurrentWeek(prev => prev + 1)}
+                        disabled={currentWeek === MAX_WEEKS}
+                        className={`nav-button ${currentWeek === MAX_WEEKS ? 'disabled' : ''}`}
+                    >
+                        &gt;
+                    </button>
                 </div>
 
-                <hr/>
-
                 <div className="points-display">
-                    {Array.from({length: 10}).map((_, i) => (
+                    {Array.from({ length: 10 }).map((_, i) => (
                         <div key={i} className="point-slot">
                             {i < totalWeekPoints ? (
                                 <img
@@ -184,42 +164,13 @@ const Membre: React.FC = () => {
                     ))}
                 </div>
             </section>
-            <hr/>
-            <section className="defis-section">
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <h3 className="section-title">Défis de la semaine {currentWeek}</h3>
-                </div>
-                {membre.defis.length > 0 ? (
-                        membre.defis.map((defi) => (
-                            <div
-                                key={defi.id}
-                                className={`defi-card ${defi.completed ? 'completed' : ''}`}
-                            >
-                                <div className="defi-content">
-                                    <h4 className="defi-title">{defi.nom}</h4>
-                                    <p className="defi-description">{defi.description}</p>
-                                    <div className="defi-points">
-                                        {Array.from({length: defi.points}).map((_, i) => (
-                                            <div key={i} className="point-slot small">
-                                                {defi.completed ? (
-                                                    <img
-                                                        src="/point_yes.svg"
-                                                        alt="Point obtenu"
-                                                        className="point-icon small active"
-                                                    />
-                                                ) : (
-                                                    <div className="point-icon small empty"></div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="no-defis-message">Aucun défi disponible pour cette semaine.</p>
-                    )}
-            </section>
+
+            <hr />
+
+            <DefisJoueur
+                defis={membre.defis}
+                currentWeek={currentWeek}
+            />
         </div>
     );
 };
