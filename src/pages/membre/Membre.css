@@ -1,103 +1,209 @@
 .membre-container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
+    color: #fff;
+    min-height: 100vh;
 }
 
 .membre-header {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.membre-info {
+    flex: 1;
+}
+
+.player-name {
+    font-size: 3.5em;
+    margin: 0;
+    color: #fff;
+    font-weight: bold;
+}
+
+.player-nickname {
+    font-size: 1.0em;
+    margin: 5px 0 0;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.membre-argent {
+    display: flex;
     align-items: center;
+    gap: 5px;
+}
+
+.membre-argent span {
+    font-size: 2em;
+    color: #fff;
+    font-weight: bold;
+}
+
+.membre-argent img {
+    height: 64px;
+    width: auto;
+}
+
+.decorative-line {
+    position: relative;
+    height: 2px;
+    background: rgba(157, 142, 115, 0.3);
+    margin: 30px 0;
+}
+
+.points-section {
+    margin: 40px 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+.section-title {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 1.4em !important;
+    font-weight: bold;
+    display: inline-block;
     margin-bottom: 20px;
 }
 
-.player-points {
+.points-display {
     display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
+    gap: 8px;
     justify-content: center;
-    margin-top: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
 }
 
-.point-icon {
-    width: 36px;
-    height: 36px;
-}
-
-.week-navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.points-area,
-.defis-area {
-    margin-top: 20px;
-    background-color: #2e3757;
-    padding: 4px; /* Plus de confort visuel */
-    border-radius: 12px; /* Adouci le rayon des coins */
-}
-
-.error-message {
-    color: #ff4d4d; /* Rouge plus doux */
-    font-size: 16px;
-    text-align: center;
-}
-
-.defi-item {
-    border: 1px solid #f1ecc8;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-    /* background-color: #282c34; */
-    display: flex;
-    flex-direction: column;
-    gap: 8px; /* Espacement optimisé */
-}
-
-.defi-item.completed {
-
-}
-
-.defi-header {
-    font-weight: bold;
-    font-size: 1.2em;
-    color: #f1ecc8;
+.point-slot {
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
-}
-
-.defi-title {
-    margin: 0;
-}
-
-.defi-details {
-    font-size: 0.9em;
-    color: #ddd;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.defi-description,
-.defi-points {
-    margin: 0;
-}
-
-.defi-progress {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
     justify-content: center;
 }
 
 .point-icon {
-    width: 36px;
-    height: 36px;
+    width: 45px;
+    height: 45px;
+    filter: hue-rotate(280deg) brightness(1.2);
+    transition: transform 0.3s ease;
 }
 
 .point_no {
-    width: 36px;
-    height: 36px;
-    border: 2px dashed #f1ecc8;
+    width: 45px;
+    height: 45px;
+    border: 2px dashed rgba(157, 142, 115, 0.3);
     border-radius: 50%;
     background-color: transparent;
+}
+
+.progress-section {
+    margin: 30px 0;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #9d8e73;
+    transition: width 0.3s ease;
+}
+
+.defis-section {
+    margin-top: 40px;
+}
+
+.defis-section h3 {
+    font-size: 2em;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.defi-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.defi-content {
+    width: 100%;
+}
+
+.defi-title {
+    margin-bottom: 10px;
+}
+
+.defi-description {
+    margin-bottom: 15px;
+}
+
+.defi-points {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.point-slot.small {
+    width: 20px;
+    height: 20px;
+    margin: 0 2px;
+}
+
+.point-icon.small {
+    width: 100%;
+    height: 100%;
+}
+
+.point-display-small {
+    width: 40px;
+    height: 40px;
+    border: 2px dashed rgba(157, 142, 115, 0.3);
+    border-radius: 50%;
+}
+
+.completed .point-display-small {
+    border: none;
+    background-image: url('/point_yes.svg');
+    background-size: contain;
+    filter: hue-rotate(280deg) brightness(1.2);
+}
+
+
+
+@media (max-width: 768px) {
+    .membre-header {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    .player-name {
+        font-size: 2.8em;
+    }
+
+    .membre-argent {
+        margin-top: 10px;
+    }
 }

@@ -1,0 +1,55 @@
+.reglement-container {
+    color: white;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2em;
+    text-align: center;
+}
+
+/* Section */
+.reglement .content section {
+    margin-bottom: 40px; /* Plus d'espace entre les sections */
+    padding: 15px;
+    background-color: rgba(0,0,0,0.3); /* Fond des sections */
+    border-radius: 8px;
+}
+
+/* Sous-titres */
+.reglement h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #fff0d9;
+}
+
+/* Texte */
+.reglement p {
+    font-size: 1rem;
+    margin: 0;
+    color: #d1d1d1; /* Couleur de texte légèrement grisée */
+}
+
+/* Espacement entre les éléments */
+.reglement section + section {
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .reglement {
+        padding: 15px;
+    }
+
+    .reglement h1 {
+        font-size: 2.2rem;
+    }
+
+    .reglement h2 {
+        font-size: 1.5rem;
+    }
+
+    .reglement p {
+        font-size: 0.95rem;
+    }
+}

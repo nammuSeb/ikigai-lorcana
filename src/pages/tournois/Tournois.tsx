@@ -28,28 +28,29 @@ const Tournois: React.FC = () => {
     const [joueurs, setJoueurs] = useState<Joueur[]>([]);
 
     useEffect(() => {
-        fetch(`https://server.inkigai.ch/api/tournois?statut=${activeTab}`, {
+        fetch(`http://localhost:3000/api/tournois?statut=${activeTab}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Origin': window.location.origin, // Inclut l'origine actuelle de la requête
+                'X-Origin': window.location.origin,
             },
         })
             .then((response) => response.json())
             .then((data) => setTournois(data))
             .catch((error) => console.error('Erreur lors de la récupération des tournois:', error));
 
-        // Récupérer les joueurs pour afficher le nom du gagnant si nécessaire
-        fetch('https://server.inkigai.ch/api/joueurs')
+        fetch('http://localhost:3000/api/joueurs')
             .then((response) => response.json())
             .then((data) => setJoueurs(data))
             .catch((error) => console.error('Erreur lors de la récupération des joueurs:', error));
     }, [activeTab]);
 
-    // Trouver le nom du gagnant par son ID
-    const getGagnantName = (gagnantId: number | undefined) => {
+    const getGagnantInfo = (gagnantId: number | undefined) => {
         const gagnant = joueurs.find(joueur => joueur.id === gagnantId);
-        return gagnant ? gagnant.pseudo : 'Non spécifié';
+        return gagnant ? {
+            pseudo: gagnant.pseudo,
+            lien: `/membre/${gagnant.pseudo}`
+        } : null;
     };
 
     return (
@@ -77,7 +78,6 @@ const Tournois: React.FC = () => {
                 </span>
             </div>
 
-
             <div className="tournois-list">
                 {tournois.map((tournoi) => (
                     <div key={tournoi.id} className={`tournoi-card ${tournoi.statut === 'annule' ? 'cancelled' : ''}`}>
@@ -88,9 +88,19 @@ const Tournois: React.FC = () => {
                         ) : (
                             <div>
                                 <TournoiCard tournoi={tournoi} />
-                                {tournoi.statut === 'passe' && (
+                                {tournoi.statut === 'passe' && tournoi.gagnant_id && (
                                     <div className="gagnant-info">
-                                        <img src="./winner.svg" alt="winner" style={{height: 24}}/> {getGagnantName(tournoi.gagnant_id)}
+                                        <img src="./winner.svg" alt="winner" style={{height: 24}}/>
+                                        {(() => {
+                                            const gagnantInfo = getGagnantInfo(tournoi.gagnant_id);
+                                            return gagnantInfo ? (
+                                                <Link to={gagnantInfo.lien} className="gagnant-link">
+                                                    {gagnantInfo.pseudo}
+                                                </Link>
+                                            ) : (
+                                                'Non spécifié'
+                                            );
+                                        })()}
                                     </div>
                                 )}
                             </div>
@@ -102,7 +112,6 @@ const Tournois: React.FC = () => {
     );
 };
 
-// Composant TournoiCard pour simplifier le code et éviter la duplication
 const TournoiCard: React.FC<{ tournoi: Tournoi }> = ({ tournoi }) => (
     <div className="tournoi-card-content">
         <div className="tournoi-header">
@@ -114,7 +123,6 @@ const TournoiCard: React.FC<{ tournoi: Tournoi }> = ({ tournoi }) => (
             ) : tournoi.statut === 'a_venir' ? (
                 <button className="register-button">Je m'inscris !</button>
             ) : null}
-
         </div>
         <h4 className="tournoi-title">
             <span className={`chip tournoi-type`}>

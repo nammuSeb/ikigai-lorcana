@@ -1,41 +1,35 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import './Footer.css';
 
 const Footer: React.FC = () => {
-    const location = useLocation(); // Hook pour obtenir le chemin actuel
-
     return (
-        <footer className="footer">
-            <div className={`footer-item ${location.pathname === '/' ? 'footer-item-focus' : ''}`}>
-                <Link to="/">
-                    <img src="/menu_icon_classement.svg" alt="bouton classement" />
-                </Link>
-            </div>
-            <div className={`footer-item ${location.pathname === '/defis' ? 'footer-item-focus' : ''}`}>
-                <Link to="/defis">
-                    <img src="/menu_icon_defis.svg" alt="bouton défis" />
-                </Link>
-            </div>
-            <div className={`footer-item ${location.pathname === '/catalogue' ? 'footer-item-focus' : ''}`}>
-                <Link to="/catalogue">
-                    <img src="/menu_icon_catalogue.svg" alt="bouton catalogue" />
-                </Link>
-            </div>
-            <div className={`footer-item ${location.pathname === '/tournois' ? 'footer-item-focus' : ''}`}>
-                <Link to="/tournois">
-                    <img src="/menu_icon_tournois.svg" alt="bouton tournois" />
-                </Link>
-            </div>
-            {/*
-            <div className={`footer-item ${location.pathname === '/compteur' ? 'footer-item-focus' : ''}`}>
-                <Link to="/compteur">
-                    <img src="./menu_icon_compteur.svg" alt="bouton compteur" />
-                </Link>
-            </div>
-            */}
+        <footer style={footerStyle}>
+            <span>
+                Inkigai - Ligue Lorcana de{' '}
+                <a href="https://ikigai-manga.shop/" style={linkStyle}>
+                    Ikigai Manga Shop
+                </a>
+                , développé par{' '}
+                <a href="https://3emelieu.ch" style={linkStyle}>
+                    3èmelieu SA
+                </a>
+            </span>
         </footer>
     );
+};
+
+const footerStyle: React.CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '20px',
+    color: 'rgba(255, 255, 255, 0.6)',
+    fontSize: '12px',
+    textAlign: 'center',
+};
+
+const linkStyle: React.CSSProperties = {
+    color: 'rgba(255, 255, 255, 0.9)', // Couleur des liens
+    textDecoration: 'underline', // Soulignement
 };
 
 export default Footer;
