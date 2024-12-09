@@ -32,18 +32,18 @@ const DefisJoueur: React.FC<DefisJoueurProps> = ({ defis, currentWeek }) => {
 
                                 <div className="points-container">
                                     {Array.from({ length: defi.points }).map((_, i) => (
-                                        <div key={i} className="point-slot small">
+                                        <div key={i} className="point-slot">
                                             {defi.completed ? (
                                                 <img
                                                     src="/point_yes.svg"
                                                     alt="Point obtenu"
-                                                    className="point-icon small active"
+                                                    className="point-icon active"
                                                     style={{
                                                         transform: `rotate(${Math.floor(Math.random() * 360)}deg)`
                                                     }}
                                                 />
                                             ) : (
-                                                <div className="point-icon small empty"></div>
+                                                <div className="point-icon empty"></div>
                                             )}
                                         </div>
                                     ))}
