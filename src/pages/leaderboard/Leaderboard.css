@@ -119,9 +119,7 @@
 /* Ajoutez ces styles à votre fichier Leaderboard.css existant */
 
 .search-container {
-    margin: 20px auto;
     max-width: 600px;
-    padding: 0 20px;
 }
 
 .search-input {

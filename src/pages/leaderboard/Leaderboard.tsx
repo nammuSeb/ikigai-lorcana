@@ -212,7 +212,7 @@ const Leaderboard: React.FC = () => {
             */}
 
             <div className="filters-container">
-                <div className="search-container">
+                <div style={{display: 'flex', justifyContent: 'center', marginBottom: 20}}>
                     <input
                         type="text"
                         placeholder="Rechercher un joueur..."

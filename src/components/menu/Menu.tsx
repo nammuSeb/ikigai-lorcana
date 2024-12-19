@@ -27,6 +27,7 @@ const Menu: React.FC = () => {
                     <img src="/menu_icon_tournois.svg" alt="bouton tournois"/>
                 </Link>
             </div>
+            {/*
             <div className={`menu-item ${location.pathname === '/reglement' ? 'footer-item-focus' : ''}`}>
                 <Link to="/reglement">
                     <img src="/menu_icon_reglement.svg" alt="bouton tournois"/>
