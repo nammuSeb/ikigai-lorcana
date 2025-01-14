@@ -1,0 +1,186 @@
+.lore-game {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Sections joueurs */
+.player-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    padding: 10px;
+}
+
+.player-section.top {
+    transform: rotate(180deg);
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1rem 0;
+}
+
+/* Score diamonds */
+.score-diamond {
+    width: 100px;
+    height: 100px;
+    background: #E4D5B7;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1A1F2E;
+}
+
+.score-diamond.crown::before {
+    content: '👑';
+    position: absolute;
+    top: -30px;
+    font-size: 1.5rem;
+}
+
+/* Buttons */
+.button-plus,
+.button-minus {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-plus {
+    background-color: #E4D5B7;
+    color: #1A1F2E;
+}
+
+.button-minus {
+    background-color: rgba(228, 213, 183, 0.2);
+    color: #E4D5B7;
+}
+
+.button-plus:disabled,
+.button-minus:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Center section */
+.center-section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+}
+
+.decorative-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    position: relative;
+}
+
+.decorative-line::before,
+.decorative-line::after {
+    content: '';
+    height: 2px;
+    flex: 1;
+    background: linear-gradient(to right, transparent, #E4D5B7, transparent);
+}
+
+.center-circle {
+    width: 80px;
+    height: 80px;
+    background: #E4D5B7;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dice-icon,
+.reload-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(228, 213, 183, 0.2);
+    border-radius: 6px;
+}
+
+/* Player names */
+.player-name {
+    color: #E4D5B7;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(228, 213, 183, 0.2);
+    color: #E4D5B7;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.close-button:hover {
+    background: rgba(228, 213, 183, 0.3);
+}
+
+/* Responsive design */
+@media (max-height: 600px) {
+    .lore-game {
+        padding: 1rem;
+    }
+
+    .score-diamond {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .button-plus,
+    .button-minus {
+        width: 50px;
+        height: 50px;
+    }
+
+    .center-circle {
+        width: 60px;
+        height: 60px;
+    }
+
+    .player-name {
+        font-size: 1.2rem;
+    }
+}

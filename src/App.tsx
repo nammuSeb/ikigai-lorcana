@@ -11,6 +11,7 @@ import Footer from './components/footer/Footer';
 import Menu from './components/menu/Menu';
 import Background from './components/background';
 import './styles/App.css';
+import LoreCounter from "./pages/lore/LoreCounter";
 
 const App: React.FC = () => {
     return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
                     <Route path="/catalogue" element={<Catalogue />} />
                     <Route path="/tournois" element={<Tournois />} />
                     <Route path="/reglement" element={<Reglement />} />
+                    <Route path="/lore" element={<LoreCounter />} />
                     {/* <Route path="/compteur" element={<Compteur />} /> */}
                     <Route path="/membre/:slug" element={<Membre />} />
                 </Routes>

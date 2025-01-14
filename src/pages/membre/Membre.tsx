@@ -47,6 +47,11 @@ const Membre: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
+    // Remonter en haut de la page lors du montage du composant
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     useEffect(() => {
         const weekFromURL = searchParams.get('week');
         if (weekFromURL) {
