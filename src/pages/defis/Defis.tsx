@@ -43,24 +43,15 @@ const Defis: React.FC = () => {
     const [currentYear, setCurrentYear] = useState('2025');
 
     // Calculer la semaine actuelle en fonction de la date
-    const calculateCurrentWeek = (year: string): number => {
-        const leagueConfig = LEAGUES[year];
+    const calculateCurrentWeek = (): number => {
+        const leagueStart = new Date('2024-11-16');
         const now = new Date();
-
-        if (now > leagueConfig.endDate) {
-            return 4;
-        }
-
-        if (now < leagueConfig.startDate) {
-            return 1;
-        }
-
-        const diffTime = now.getTime() - leagueConfig.startDate.getTime();
+        const diffTime = now.getTime() - leagueStart.getTime();
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
         const weekNumber = Math.floor(diffDays / 7) + 1;
-
         return Math.min(Math.max(1, weekNumber), 4);
     };
+
 
     // Calculer les dates pour une semaine donnée
     const getWeeklyPeriod = (weekNumber: number, year: string): WeekRange => {

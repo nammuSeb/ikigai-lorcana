@@ -24,36 +24,107 @@ interface Joueur {
     pseudo: string;
 }
 
+interface FetchState<T> {
+    data: T[];
+    loading: boolean;
+    error: string | null;
+}
+
 const Tournois: React.FC = () => {
-    const [tournois, setTournois] = useState<Tournoi[]>([]);
+    const [tournoisState, setTournoisState] = useState<FetchState<Tournoi>>({
+        data: [],
+        loading: true,
+        error: null
+    });
+    const [joueursState, setJoueursState] = useState<FetchState<Joueur>>({
+        data: [],
+        loading: true,
+        error: null
+    });
     const [activeTab, setActiveTab] = useState<string>('a_venir');
-    const [joueurs, setJoueurs] = useState<Joueur[]>([]);
+
+    const fetchData = async (url: string, options = {}) => {
+        console.log('Fetching from URL:', url);
+        const response = await fetch(url, options);
+        console.log('Response status:', response.status);
+
+        if (!response.ok) {
+            const contentType = response.headers.get('content-type');
+            const text = await response.text();
+            console.log('Error response:', text);
+            throw new Error(`Server returned status ${response.status}: ${text}`);
+        }
+
+        return response.json();
+    };
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/api/tournois?statut=${activeTab}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Origin': window.location.origin,
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => setTournois(data))
-            .catch((error) => console.error('Erreur lors de la récupération des tournois:', error));
+        const fetchTournois = async () => {
+            try {
+                setTournoisState(prev => ({ ...prev, loading: true, error: null }));
+                const data = await fetchData(`${API_BASE_URL}/api/tournois?statut=${activeTab}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Origin': window.location.origin,
+                    },
+                });
+                setTournoisState({ data, loading: false, error: null });
+            } catch (error) {
+                console.error('Tournament fetch error:', error);
+                setTournoisState(prev => ({
+                    ...prev,
+                    data: [],
+                    loading: false,
+                    error: error instanceof Error ? error.message : 'Une erreur est survenue'
+                }));
+            }
+        };
 
-        fetch(`${API_BASE_URL}/api/joueurs`)
-            .then((response) => response.json())
-            .then((data) => setJoueurs(data))
-            .catch((error) => console.error('Erreur lors de la récupération des joueurs:', error));
+        fetchTournois();
     }, [activeTab]);
 
+    useEffect(() => {
+        const fetchJoueurs = async () => {
+            try {
+                const data = await fetchData(`${API_BASE_URL}/api/joueurs`);
+                setJoueursState({ data, loading: false, error: null });
+            } catch (error) {
+                console.error('Players fetch error:', error);
+                setJoueursState(prev => ({
+                    ...prev,
+                    data: [],
+                    loading: false,
+                    error: error instanceof Error ? error.message : 'Une erreur est survenue'
+                }));
+            }
+        };
+
+        fetchJoueurs();
+    }, []);
+
     const getGagnantInfo = (gagnantId: number | undefined) => {
-        const gagnant = joueurs.find(joueur => joueur.id === gagnantId);
+        const gagnant = joueursState.data.find(joueur => joueur.id === gagnantId);
         return gagnant ? {
             pseudo: gagnant.pseudo,
             lien: `/membre/${gagnant.pseudo}`
         } : null;
     };
+
+    // Show error if both requests failed
+    if (tournoisState.error && joueursState.error) {
+        return (
+            <div className="error-container">
+                <p className="error-message">Erreur tournois: {tournoisState.error}</p>
+                <p className="error-message">Erreur joueurs: {joueursState.error}</p>
+            </div>
+        );
+    }
+
+    // Show loading only if tournaments are still loading
+    if (tournoisState.loading) {
+        return <div className="loading">Chargement des tournois...</div>;
+    }
 
     return (
         <div className="tournois-container">
@@ -81,34 +152,38 @@ const Tournois: React.FC = () => {
             </div>
 
             <div className="tournois-list">
-                {tournois.map((tournoi) => (
-                    <div key={tournoi.id} className={`tournoi-card ${tournoi.statut === 'annule' ? 'cancelled' : ''}`}>
-                        {activeTab === 'a_venir' ? (
-                            <Link to={tournoi.lien}>
-                                <TournoiCard tournoi={tournoi} />
-                            </Link>
-                        ) : (
-                            <div>
-                                <TournoiCard tournoi={tournoi} />
-                                {tournoi.statut === 'passe' && tournoi.gagnant_id && (
-                                    <div className="gagnant-info">
-                                        <img src="./winner.svg" alt="winner" style={{height: 24}}/>
-                                        {(() => {
-                                            const gagnantInfo = getGagnantInfo(tournoi.gagnant_id);
-                                            return gagnantInfo ? (
-                                                <Link to={gagnantInfo.lien} className="gagnant-link">
-                                                    {gagnantInfo.pseudo}
-                                                </Link>
-                                            ) : (
-                                                'Non spécifié'
-                                            );
-                                        })()}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                ))}
+                {tournoisState.data.length === 0 ? (
+                    <div className="no-tournaments">Aucun tournoi disponible pour le moment</div>
+                ) : (
+                    tournoisState.data.map((tournoi) => (
+                        <div key={tournoi.id} className={`tournoi-card ${tournoi.statut === 'annule' ? 'cancelled' : ''}`}>
+                            {activeTab === 'a_venir' ? (
+                                <Link to={tournoi.lien}>
+                                    <TournoiCard tournoi={tournoi} />
+                                </Link>
+                            ) : (
+                                <div>
+                                    <TournoiCard tournoi={tournoi} />
+                                    {tournoi.statut === 'passe' && tournoi.gagnant_id && (
+                                        <div className="gagnant-info">
+                                            <img src="./winner.svg" alt="winner" style={{height: 24}}/>
+                                            {(() => {
+                                                const gagnantInfo = getGagnantInfo(tournoi.gagnant_id);
+                                                return gagnantInfo ? (
+                                                    <Link to={gagnantInfo.lien} className="gagnant-link">
+                                                        {gagnantInfo.pseudo}
+                                                    </Link>
+                                                ) : (
+                                                    'Non spécifié'
+                                                );
+                                            })()}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
