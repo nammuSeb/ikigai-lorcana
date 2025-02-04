@@ -34,6 +34,7 @@
     margin: 0 auto;
 }
 
+
 /* Styles des cartes */
 .catalogue-card {
     position: relative;
@@ -239,4 +240,28 @@
 
 .toggle-filters-btn:hover {
     background: #2980b9;
+}
+
+
+/* Breakpoint pour desktop */
+@media screen and (min-width: 1024px) {
+    .catalogue-grid {
+        /* 4 cartes par ligne minimum */
+        grid-template-columns: repeat(auto-fit, minmax(calc(25% - 1.5rem), 1fr));
+        /* Assure un espacement uniforme */
+        gap: 2rem;
+        /* Ajoute plus de padding sur desktop */
+        padding: 2rem;
+    }
+
+    .catalogue-card {
+        /* Évite que les cartes ne s'étirent trop en hauteur */
+        height: fit-content;
+        /* Transition douce lors du hover */
+        transition: transform 0.2s ease;
+    }
+
+    .catalogue-card:hover {
+        transform: translateY(-4px);
+    }
 }
