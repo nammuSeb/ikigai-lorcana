@@ -33,7 +33,7 @@ const Reglement: React.FC = () => {
         <div className="reglement-container">
             <div className="header-title">
                 <h1>Règlement</h1>
-                <img src="./rules_icon.svg" alt="Icone tournois" style={{width: 72, marginRight: 4, marginTop: 6, marginBottom: 6}}/>
+                <img src="./rules_icon.svg" alt="Icone tournois" style={{width: 42, marginRight: 4, marginTop: 6, marginBottom: 6}}/>
             </div>
             <div className="decorative-line">
                 <div className="center-decor"></div>

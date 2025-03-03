@@ -5,6 +5,74 @@
     border-radius: 8px;
 }
 
+.player-info {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 8px;
+    backdrop-filter: blur(20px);
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.player-main-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.player-rank-name {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex: 1;
+}
+
+.player-rank {
+    margin-right: 6px;
+    color: #f5e9cd;
+    flex-shrink: 0;
+}
+
+.player-pseudo {
+    color: #fff;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.5em;
+}
+
+.player-money {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.money-amount {
+    color: #f5e9cd;
+    font-weight: 500;
+}
+
+.money-icon {
+    height: 26px;
+    margin-left: 6px;
+}
+
+.player-nickname {
+    color: #f5e9cd;
+    font-size: 0.7em;
+    font-style: italic;
+    opacity: 0.8;
+    margin-top: 3px;
+    margin-left: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .player {
     display: flex;
@@ -28,17 +96,7 @@
     background: linear-gradient(to right, rgba(241, 236, 200, 0), #f1ecc8, rgba(241, 236, 200, 0));
 }
 
-.player-info {
-    padding: 10px;
-}
 
-.player-name {
-    font-size: 1.8em !important;
-    font-weight: bold;
-    color: #f1ecc8;
-    text-decoration: none;
-    margin-right: auto;
-}
 
 .player-points {
     font-size: 0.9em;
@@ -54,12 +112,11 @@
 }
 
 .player-points {
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     gap: 10px; /* Espacement entre les pastilles */
     margin-top: 10px;
-    padding: 4px;
 }
 
 .player-points {

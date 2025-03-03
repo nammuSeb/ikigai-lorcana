@@ -1,65 +1,227 @@
+/* Structure de base */
 .lore-game {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    z-index: 100;
+    background-color: #242b43;
+    box-sizing: border-box;
+    overflow: hidden; /* Empêcher le scroll */
+    transition: background-color 0.5s ease;
 }
 
-/* Sections joueurs */
 .player-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    flex-grow: 1;
+    padding: 1rem 0;
     position: relative;
-    padding: 10px;
+    transition: background-color 0.3s ease;
+    overflow: hidden; /* Empêcher le scroll */
 }
 
-.player-section.top {
-    transform: rotate(180deg);
+/* Ajout d'une nouvelle classe pour le conteneur des éléments du joueur */
+.player-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-.player-info {
+/* Pour le joueur 2 en miroir */
+.player-content-mirror .player-info-lore {
+    flex-direction: row-reverse; /* Inverse l'ordre des éléments */
+}
+
+.player-content-mirror .ink-buttons {
+    flex-direction: row-reverse; /* Inverse les boutons + et - d'encre */
+}
+
+.top {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    transform: rotate(180deg); /* Rotation de la section du joueur 2 */
+}
+
+.bottom {
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-info-lore {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1.5rem;
-    margin: 1rem 0;
+    gap: 20px;
+    width: 100vw;
 }
 
-/* Score diamonds */
+.player-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.center-section {
+    padding: 5px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Score et compteurs */
 .score-diamond {
-    width: 100px;
-    height: 100px;
-    background: #E4D5B7;
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    width: 90px;
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.5rem;
     font-weight: bold;
-    color: #1A1F2E;
+    color: white;
+    border: 3px solid #50a5ff;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3), inset 0 0 5px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-.score-diamond.crown::before {
-    content: '👑';
-    position: absolute;
-    top: -30px;
-    font-size: 1.5rem;
+.score-diamond.active {
+    animation: pulse 1.5s infinite;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-/* Buttons */
-.button-plus,
-.button-minus {
-    width: 60px;
-    height: 60px;
+/* Compteur d'encre */
+.ink-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 3px 10px;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.ink-counter span {
+    color: white;
+    font-size: 0.9rem;
+}
+
+.ink-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+/* Timer */
+.timer-display {
+    margin-top: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 4px 12px;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.turn-timer-display {
+    margin-top: 5px;
+    background-color: rgba(255, 165, 0, 0.3);
+    padding: 3px 10px;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+/* Pour centrer le bouton pause */
+.timer-controls {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.timer-button {
+    width: 42px;
+    height: 42px;
+    border: none;
+    background-color: rgba(80, 165, 255, 0.3);
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-icon {
+    font-family: monospace; /* Pour un meilleur rendu de II */
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.timer-play {
+    background-color: rgba(46, 204, 113, 0.4);
+}
+
+.timer-play:hover {
+    background-color: rgba(46, 204, 113, 0.6);
+}
+
+.timer-pause {
+    background-color: rgba(231, 76, 60, 0.4);
+}
+
+.timer-pause:hover {
+    background-color: rgba(231, 76, 60, 0.6);
+}
+
+/* Boutons */
+.button-round {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(80, 165, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.button-round-med {
+    border-radius: 50px;
+}
+
+.button-round-small {
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: none;
-    font-size: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
@@ -67,120 +229,919 @@
     justify-content: center;
 }
 
-.button-plus {
-    background-color: #E4D5B7;
-    color: #1A1F2E;
+.button-plus,
+.button-minus {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(80, 165, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
 }
 
-.button-minus {
-    background-color: rgba(228, 213, 183, 0.2);
-    color: #E4D5B7;
+.button-plus:hover,
+.button-minus:hover,
+.button-round:hover,
+.button-round-small:hover,
+.button-round-med:hover {
+    background-color: rgba(80, 165, 255, 0.4);
+    box-shadow: 0 0 15px rgba(80, 165, 255, 0.5);
+}
+
+.button-plus:active,
+.button-minus:active,
+.button-round:active,
+.button-round-small:active,
+.button-round-med:active {
+    transform: scale(0.95);
 }
 
 .button-plus:disabled,
-.button-minus:disabled {
-    opacity: 0.5;
+.button-minus:disabled,
+.button-round:disabled,
+.button-round-small:disabled,
+.button-round-med:disabled {
+    opacity: 0.3;
     cursor: not-allowed;
 }
 
-/* Center section */
-.center-section {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
+.action-buttons,
+.secondary-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 90%;
+    max-width: 300px;
 }
 
-.decorative-line {
+.action-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
-    position: relative;
-}
-
-.decorative-line::before,
-.decorative-line::after {
-    content: '';
-    height: 2px;
-    flex: 1;
-    background: linear-gradient(to right, transparent, #E4D5B7, transparent);
-}
-
-.center-circle {
-    width: 80px;
-    height: 80px;
-    background: #E4D5B7;
-    border-radius: 50%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.dice-icon,
-.reload-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(228, 213, 183, 0.2);
-    border-radius: 6px;
-}
-
-/* Player names */
-.player-name {
-    color: #E4D5B7;
-    font-size: 1.5rem;
-    margin-top: 1rem;
-}
-
-/* Close button */
-.close-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
     border: none;
-    background: rgba(228, 213, 183, 0.2);
-    color: #E4D5B7;
-    font-size: 1.5rem;
+    border-radius: 50px;
+    padding: 8px 12px;
+    color: white;
+    font-size: 0.9rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: all 0.2s ease;
 }
 
-.close-button:hover {
-    background: rgba(228, 213, 183, 0.3);
+.action-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive design */
+.action-button:active {
+    transform: scale(0.95);
+}
+
+.dice-btn,
+.settings-btn {
+    flex: 1;
+    max-width: 70px;
+}
+
+.next-btn {
+    flex: 2;
+    background-color: rgba(80, 165, 255, 0.6);
+    padding: 10px 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(80, 165, 255, 0.3);
+}
+
+.next-btn:hover {
+    background-color: rgba(80, 165, 255, 0.8);
+    box-shadow: 0 0 20px rgba(80, 165, 255, 0.5);
+}
+
+.next-btn:active {
+    transform: scale(0.98);
+}
+
+.next-btn span {
+    position: relative;
+}
+
+.next-btn span:after {
+    content: '→';
+    margin-left: 8px;
+    font-size: 1.2rem;
+}
+
+.secondary-buttons {
+    margin-top: 2px;
+}
+
+.secondary-buttons .action-button {
+    flex: 1;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+
+/* Éléments de texte et information */
+.player-name {
+    margin-top: 0.5rem;
+    font-size: 1.3rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px 12px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.player-name:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 300px;
+    padding: 2px 0;
+}
+
+.turn-info,
+.active-player {
+    color: white;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.active-player {
+    background-color: rgba(80, 165, 255, 0.3);
+    font-weight: bold;
+}
+
+/* Panneau de paramètres */
+.settings-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 320px;
+    background-color: #242b43;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    z-index: 2000; /* Augmenté pour être au-dessus de tout */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalIn 0.3s ease;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.settings-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.settings-header button:hover {
+    opacity: 1;
+}
+
+.settings-content {
+    padding: 10px 15px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.player-settings,
+.timer-settings,
+.dice-settings,
+.background-settings {
+    margin-bottom: 15px;
+}
+
+.player-settings h4,
+.timer-settings h4,
+.dice-settings h4,
+.background-settings h4 {
+    color: white;
+    margin: 0 0 8px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1rem;
+}
+
+.color-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-selector span {
+    color: white;
+    font-size: 0.9rem;
+}
+
+.color-options {
+    display: flex;
+    gap: 8px;
+}
+
+.color-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.timer-options {
+    margin-top: 8px;
+}
+
+.timer-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.timer-options label.mt-3 {
+    margin-top: 12px;
+}
+
+.timer-options input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.time-selector {
+    margin-top: 10px;
+}
+
+.time-preset {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-preset span {
+    color: white;
+    font-size: 0.9rem;
+}
+
+.time-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.time-buttons button {
+    flex: 1;
+    padding: 6px 8px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgba(80, 165, 255, 0.3);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 60px;
+}
+
+.time-buttons button:hover {
+    background-color: rgba(80, 165, 255, 0.5);
+}
+
+.theme-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.theme-selector button {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgba(80, 165, 255, 0.3);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-selector button:hover {
+    background-color: rgba(80, 165, 255, 0.5);
+}
+
+.opacity-slider {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.opacity-slider span {
+    color: white;
+    font-size: 0.9rem;
+}
+
+.opacity-slider input[type="range"] {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    outline: none;
+}
+
+.opacity-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #50a5ff;
+    cursor: pointer;
+}
+
+.opacity-slider input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #50a5ff;
+    cursor: pointer;
+    border: none;
+}
+
+/* Couleurs prédéfinies */
+.color-option.blue {
+    background-color: #4682b4;
+}
+
+.color-option.green {
+    background-color: #2e8b57;
+}
+
+.color-option.purple {
+    background-color: #9370db;
+}
+
+.color-option.orange {
+    background-color: #ff7f50;
+}
+
+.color-option.red {
+    background-color: #cd5c5c;
+}
+
+.color-option.yellow {
+    background-color: #daa520;
+}
+
+.color-option.teal {
+    background-color: #20b2aa;
+}
+
+.color-option.pink {
+    background-color: #db7093;
+}
+
+.settings-actions {
+    margin-top: 15px;
+    padding-top: 10px;
+}
+
+.settings-actions button {
+    width: 100%;
+    background-color: rgba(80, 165, 255, 0.3);
+    border: none;
+    border-radius: 50px;
+    padding: 10px 12px;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.settings-actions button:hover {
+    background-color: rgba(80, 165, 255, 0.5);
+}
+
+/* Affichage du résultat du dé */
+.dice-result {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important; /* Important pour s'assurer que la transformation est maintenue */
+    width: 120px; /* Augmentation de la taille */
+    height: 120px; /* Augmentation de la taille */
+    background-color: rgba(0, 0, 0, 0.85); /* Plus opaque */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000; /* Plus élevé pour être sûr qu'il apparaît au-dessus */
+    animation: diceAppear 0.3s ease;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); /* Ajout d'une ombre pour plus de visibilité */
+}
+
+.dice-value {
+    font-size: 4.5rem; /* Taille de police augmentée */
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Ajout d'une ombre pour plus de visibilité */
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Mise à jour de l'animation d'apparition du dé */
+@keyframes diceAppear {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.2);
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes scoreChange {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes winner {
+    0% {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    }
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -55%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Classes d'animation et d'effet */
+.score-change {
+    animation: scoreChange 0.5s ease;
+}
+
+.winner {
+    animation: winner 1s ease infinite;
+}
+
+.button-touch {
+    position: relative;
+    overflow: hidden;
+}
+
+.button-touch:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.5s;
+}
+
+.button-touch:active:after {
+    transform: scale(0, 0);
+    opacity: 0.3;
+    transition: 0s;
+}
+
+/* Media Queries - Responsive design */
+/* Hauteur réduite */
 @media (max-height: 600px) {
+    .score-diamond {
+        width: 80px;
+        height: 80px;
+        font-size: 2.2rem;
+    }
+
+    .button-plus,
+    .button-minus,
+    .button-round {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5rem;
+    }
+
+    .player-name {
+        font-size: 1.1rem;
+        margin-top: 0.3rem;
+    }
+
+    .timer-display {
+        font-size: 1rem;
+    }
+
+    .turn-timer-display {
+        font-size: 0.8rem;
+    }
+
+    .next-btn {
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-height: 500px) {
+    .player-section {
+        padding: 0.5rem 0;
+        overflow: hidden;
+    }
+
+    .player-info-lore {
+        gap: 15px;
+    }
+
+    .score-diamond {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+
+    .button-plus,
+    .button-minus,
+    .button-round {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .player-name {
+        font-size: 1rem;
+        margin-top: 0.2rem;
+    }
+
+    .ink-counter {
+        margin-top: 2px;
+        padding: 2px 8px;
+    }
+
+    .ink-counter span {
+        font-size: 0.8rem;
+    }
+
+    .ink-buttons button,
+    .button-round-small {
+        width: 20px;
+        height: 20px;
+    }
+
+    .timer-display {
+        font-size: 0.9rem;
+        padding: 2px 8px;
+    }
+
+    .turn-timer-display {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+}
+
+/* Largeur réduite */
+@media (max-width: 360px) {
+    .player-info {
+        gap: 12px;
+    }
+
+    .score-diamond {
+        width: 75px;
+        height: 75px;
+        font-size: 2rem;
+    }
+
+    .button-plus,
+    .button-minus,
+    .button-round {
+        width: 42px;
+        height: 42px;
+    }
+
+    .action-buttons,
+    .secondary-buttons,
+    .timer-controls {
+        max-width: 280px;
+    }
+
+    .action-button,
+    .timer-button {
+        padding: 6px 10px;
+    }
+
+    .secondary-buttons .action-button {
+        padding: 4px 6px;
+    }
+
+    .next-btn {
+        padding: 8px 10px;
+    }
+}
+
+/* Très petits écrans */
+@media (max-width: 320px) {
+    .score-diamond {
+        width: 65px;
+        height: 65px;
+        font-size: 1.8rem;
+    }
+
+    .button-plus,
+    .button-minus,
+    .button-round {
+        width: 38px;
+        height: 38px;
+        font-size: 1.2rem;
+    }
+
+    .player-name {
+        font-size: 0.9rem;
+    }
+
+    .game-info {
+        font-size: 0.8rem;
+    }
+
+    .action-button,
+    .timer-button {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+    }
+
+    .timer-display {
+        font-size: 0.8rem;
+    }
+
+    .turn-timer-display {
+        font-size: 0.7rem;
+    }
+
+    .next-btn span:after {
+        content: '';
+        margin-left: 0;
+    }
+}
+
+/* Écrans plus larges (tablettes et desktop) */
+@media (min-width: 768px) {
     .lore-game {
         padding: 1rem;
     }
 
     .score-diamond {
-        width: 80px;
-        height: 80px;
-        font-size: 2rem;
+        width: 100px;
+        height: 100px;
+        font-size: 3rem;
     }
 
     .button-plus,
-    .button-minus {
-        width: 50px;
-        height: 50px;
-    }
-
-    .center-circle {
+    .button-minus,
+    .button-round {
         width: 60px;
         height: 60px;
+        font-size: 2rem;
     }
 
     .player-name {
+        font-size: 1.5rem;
+        margin-top: 0.7rem;
+    }
+
+    .game-info {
+        max-width: 400px;
+        font-size: 1rem;
+    }
+
+    .action-buttons,
+    .secondary-buttons,
+    .timer-controls {
+        max-width: 400px;
+    }
+
+    .action-button,
+    .timer-button {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .next-btn {
+        padding: 12px 20px;
         font-size: 1.2rem;
+    }
+
+    .ink-counter {
+        padding: 4px 12px;
+    }
+
+    .ink-counter span {
+        font-size: 1rem;
+    }
+
+    .ink-buttons button,
+    .button-round-small {
+        width: 28px;
+        height: 28px;
+    }
+
+    .timer-display {
+        font-size: 1.3rem;
+        padding: 5px 15px;
+    }
+
+    .turn-timer-display {
+        font-size: 1rem;
+        padding: 4px 12px;
+    }
+}
+
+/* Orientation paysage */
+@media (orientation: landscape) and (max-height: 500px) {
+    .lore-game {
+        display: grid;
+        grid-template-columns: 1fr 220px 1fr;
+        grid-template-rows: 100vh;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .player-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0.5rem;
+        overflow: hidden;
+    }
+
+    /* Pour s'assurer que le contenu des joueurs reste visible */
+    .player-content {
+        height: 100%;
+        overflow-y: auto;
+        padding: 10px 0;
+    }
+
+    .top {
+        grid-column: 3;
+        grid-row: 1;
+        border-bottom: none;
+        border-left: 2px solid rgba(255, 255, 255, 0.1);
+        transform: rotate(180deg); /* Maintenir la rotation en mode paysage */
+    }
+
+    .bottom {
+        grid-column: 1;
+        grid-row: 1;
+        border-top: none;
+        border-right: 2px solid rgba(255, 255, 255, 0.1);
+        transform: none;
+    }
+
+    .center-section {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .score-diamond {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+    }
+
+    .button-plus,
+    .button-minus,
+    .button-round {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .game-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .action-buttons,
+    .secondary-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    /* Correction pour le bouton timer en mode paysage */
+    .timer-controls {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .timer-button {
+        width: 100%;
+        max-width: 80px;
+        margin: 0 auto;
+    }
+
+    .action-button,
+    .timer-button {
+        width: 100%;
+    }
+
+    .dice-btn,
+    .settings-btn {
+        max-width: 100%;
+    }
+
+    .next-btn {
+        margin: 5px 0;
+    }
+
+    /* Rendre le résultat du dé plus petit en mode paysage pour ne pas bloquer la vue */
+    .dice-result {
+        width: 100px;
+        height: 100px;
+    }
+
+    .dice-value {
+        font-size: 3.5rem;
     }
 }

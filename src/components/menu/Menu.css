@@ -5,9 +5,11 @@
     background: rgb(178,161,120);
     background: linear-gradient(180deg, rgba(178,161,120,1) 0%, rgba(248,236,201,1) 100%);
     border-top: 1px solid #cdc29f;
-    position: fixed; /* Fixe le footer en bas */
+    position: fixed !important;
     bottom: 0;       /* Place le footer en bas de l'écran */
-    width: 100%;     /* S'étend sur toute la largeur de l'écran */
+    margin-bottom: 0;
+    width: 100vw;     /* S'étend sur toute la largeur de l'écran */
+    max-width: 100vw;
     z-index: 1000;   /* Assure que le footer reste au-dessus d'autres éléments */
 }
 
@@ -37,5 +39,5 @@
 }
 
 .menu-item img {
-    height: 48px;
+    height: 42px;
 }

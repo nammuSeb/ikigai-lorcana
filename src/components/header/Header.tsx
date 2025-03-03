@@ -12,7 +12,9 @@ const Header: React.FC = () => {
             </header>
             <div style={{position: 'absolute', zIndex: 9999, right: 10, color: 'rgba(255,255,255,0.5)', fontSize: '0.8em'}}>
                 <Link to="/reglement">
-                    Reglement
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <span><img src="/menu_icon_reglement.svg" alt="Icone défis" style={{height: 16, marginTop: 8, marginRight: 4}}/></span><span style={{color: '#f5e9cd'}}> Reglement</span>
+                    </div>
                 </Link>
             </div>
         </>

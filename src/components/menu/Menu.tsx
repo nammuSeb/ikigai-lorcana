@@ -33,13 +33,13 @@ const Menu: React.FC = () => {
                     <img src="/menu_icon_reglement.svg" alt="bouton tournois"/>
                 </Link>
             </div>
-            {/*
-            <div className={`footer-item ${location.pathname === '/compteur' ? 'footer-item-focus' : ''}`}>
-                <Link to="/compteur">
-                    <img src="./menu_icon_compteur.svg" alt="bouton compteur" />
+            */}
+            <div className={`menu-item ${location.pathname === '/lore' ? 'footer-item-focus' : ''}`}>
+                <Link to="/lore">
+                    <img src="/menu_icon_compteur.svg" alt="bouton compteur" />
                 </Link>
             </div>
-            */}
+
         </footer>
     );
 };

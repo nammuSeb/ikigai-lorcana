@@ -130,7 +130,7 @@ const Tournois: React.FC = () => {
         <div className="tournois-container">
             <div className="header-title">
                 <h1>Tournois</h1>
-                <img src="./header_icon_tournois.svg" alt="Icone tournois" style={{ width: 86 }} />
+                <img src="./header_icon_tournois.svg" alt="Icone tournois" style={{ width: 42 }} />
             </div>
             <div className="decorative-line">
                 <div className="center-decor"></div>

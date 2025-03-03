@@ -30,7 +30,7 @@ interface MembreData {
 }
 
 const MAX_WEEKS = 4;
-const POINT_ZERO = new Date("2024-11-15");
+const POINT_ZERO = new Date("2024-11-11");
 
 const getCurrentWeek = (): number => {
     const now = new Date();

@@ -22,6 +22,7 @@ interface FilterProps {
         langue: string;
         foil: string;
         sortOrder: string;
+        stockFirst: boolean;
     };
     setFilters: (filters: any) => void;
     series: string[];
@@ -31,11 +32,11 @@ interface FilterProps {
 const FilterControls: React.FC<FilterProps> = ({filters, setFilters, series, className = ''}) => (
     <div className={`filter-controls ${className}`}>
         <div className="filter-group">
-            <label htmlFor="numero">Numéro de carte</label>
+            <label htmlFor="numero">Nom ou numéro</label>
             <input
                 id="numero"
                 type="text"
-                placeholder="Rechercher un numéro..."
+                placeholder="Rechercher une carte..."
                 value={filters.numero}
                 onChange={(e) => setFilters({...filters, numero: e.target.value})}
             />
@@ -69,7 +70,7 @@ const FilterControls: React.FC<FilterProps> = ({filters, setFilters, series, cla
         </div>
 
         <div className="filter-group">
-            <label htmlFor="foil">Type</label>
+            <label htmlFor="foil">Foil</label>
             <select
                 id="foil"
                 value={filters.foil}
@@ -90,7 +91,20 @@ const FilterControls: React.FC<FilterProps> = ({filters, setFilters, series, cla
             >
                 <option value="asc">A → Z</option>
                 <option value="desc">Z → A</option>
+                <option value="price-asc">Prix ↑</option>
+                <option value="price-desc">Prix ↓</option>
             </select>
+        </div>
+
+        <div className="filter-group checkbox-group">
+            <label>
+                <input
+                    type="checkbox"
+                    checked={filters.stockFirst}
+                    onChange={(e) => setFilters({...filters, stockFirst: e.target.checked})}
+                />
+                Afficher les cartes disponibles en premier
+            </label>
         </div>
     </div>
 );
@@ -106,7 +120,8 @@ const Catalogue: React.FC = () => {
         serie: '',
         langue: '',
         foil: '',
-        sortOrder: 'asc'
+        sortOrder: 'asc',
+        stockFirst: true // Par défaut, afficher les cartes disponibles en premier
     });
 
     useEffect(() => {
@@ -125,16 +140,34 @@ const Catalogue: React.FC = () => {
 
     const applyFilters = () => {
         let result = cards.filter(card =>
-            (filters.numero === '' || card.numero.includes(filters.numero)) &&
+            (filters.numero === '' ||
+                card.numero.toLowerCase().includes(filters.numero.toLowerCase()) ||
+                card.nom.toLowerCase().includes(filters.numero.toLowerCase())) &&
             (filters.serie === '' || card.serie === filters.serie) &&
             (filters.langue === '' || card.langue === filters.langue) &&
             (filters.foil === '' || (filters.foil === 'true' ? card.foil > 0 : card.foil === 0))
         );
 
+        // Tri des cartes
         result.sort((a, b) => {
-            return filters.sortOrder === 'asc'
-                ? a.nom.localeCompare(b.nom)
-                : b.nom.localeCompare(a.nom);
+            // Si l'option "stock d'abord" est activée, trier les cartes vendues en dernier
+            if (filters.stockFirst) {
+                if (a.stock === 0 && b.stock > 0) return 1;
+                if (a.stock > 0 && b.stock === 0) return -1;
+            }
+
+            // Tri basé sur le critère sélectionné
+            switch (filters.sortOrder) {
+                case 'desc':
+                    return b.nom.localeCompare(a.nom);
+                case 'price-asc':
+                    return a.prix - b.prix;
+                case 'price-desc':
+                    return b.prix - a.prix;
+                case 'asc':
+                default:
+                    return a.nom.localeCompare(b.nom);
+            }
         });
 
         setFilteredCards(result);
@@ -156,7 +189,7 @@ const Catalogue: React.FC = () => {
         <div className="catalogue-container">
             <div className="header-title">
                 <h1>Catalogue</h1>
-                <img src="/header_icon_catalogue.svg" alt="Icone catalogue" style={{height: 86}}/>
+                <img src="/header_icon_catalogue.svg" alt="Icone catalogue" style={{height: 42}}/>
             </div>
 
             <div className="decorative-line">

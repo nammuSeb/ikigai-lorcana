@@ -1,25 +1,83 @@
 {
-  "short_name": "Ikigai Lorcana",
-  "name": "Ikigai Lorcana App",
+  "name": "Inkigai - Ligue Lorcana | Ikigai Manga Shop",
+  "short_name": "Inkigai",
+  "description": "Suivez les défis de la ligue Lorcana à Ikigai Manga Shop",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#242b43",
+  "theme_color": "#242b43",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "point_yes.svg",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "src": "/point_yes.svg",
+      "sizes": "72x72",
       "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "point_yes.svg",
+      "src": "/point_yes.svg",
+      "sizes": "96x96",
       "type": "image/png",
-      "sizes": "192x192"
+      "purpose": "any maskable"
     },
     {
-      "src": "point_yes.svgg",
+      "src": "/point_yes.svg",
+      "sizes": "128x128",
       "type": "image/png",
-      "sizes": "512x512"
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/point_yes.svg",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/point_yes.svg",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/point_yes.svg",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/point_yes.svg",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/point_yes.svg",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "shortcuts": [
+    {
+      "name": "Défis Hebdomadaires",
+      "short_name": "Défis",
+      "description": "Voir les défis de la semaine",
+      "url": "/defis",
+      "icons": [{ "src": "/point_yes.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Classement",
+      "short_name": "Classement",
+      "description": "Voir le classement des joueurs",
+      "url": "/",
+      "icons": [{ "src": "/point_yes.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Tournois",
+      "short_name": "Tournois",
+      "description": "Voir les tournois à venir",
+      "url": "/tournois",
+      "icons": [{ "src": "/point_yes.svg", "sizes": "192x192" }]
+    }
+  ]
 }

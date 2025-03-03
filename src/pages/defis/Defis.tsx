@@ -10,6 +10,8 @@ interface Defi {
     description: string;
     points: number;
     points_type: string;
+    max_points?: number | null;
+    completed?: boolean;
 }
 
 interface WeekRange {
@@ -17,91 +19,70 @@ interface WeekRange {
     endDate: string;
 }
 
-interface LeagueConfig {
-    startDate: Date;
-    endDate: Date;
+interface LeagueInfo {
+    startDate: string;
+    endDate: string;
+    currentWeek: number;
 }
-
-// Configuration des ligues
-const LEAGUES: { [key: string]: LeagueConfig } = {
-    '2024': {
-        startDate: new Date('2024-11-16'),
-        endDate: new Date('2024-12-13')
-    },
-    '2025': {
-        startDate: new Date('2025-01-10'),
-        endDate: new Date('2025-02-09')
-    }
-};
 
 const Defis: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [defis, setDefis] = useState<Defi[]>([]);
-    const [activeTab, setActiveTab] = useState<string>('arene');
+    const [activeTab, setActiveTab] = useState<string>('defi_semaine');
     const [currentWeek, setCurrentWeek] = useState(1);
     const [weekDates, setWeekDates] = useState<WeekRange>({startDate: '', endDate: ''});
-    const [currentYear, setCurrentYear] = useState('2025');
+    const [leagueInfo, setLeagueInfo] = useState<LeagueInfo | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    // Calculer la semaine actuelle en fonction de la date
-    const calculateCurrentWeek = (): number => {
-        const leagueStart = new Date('2024-11-16');
-        const now = new Date();
-        const diffTime = now.getTime() - leagueStart.getTime();
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const weekNumber = Math.floor(diffDays / 7) + 1;
-        return Math.min(Math.max(1, weekNumber), 4);
-    };
-
-
-    // Calculer les dates pour une semaine donnée
-    const getWeeklyPeriod = (weekNumber: number, year: string): WeekRange => {
-        const leagueConfig = LEAGUES[year];
-        const startOfWeek = new Date(leagueConfig.startDate);
-        startOfWeek.setDate(leagueConfig.startDate.getDate() + (7 * (weekNumber - 1)));
-
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-        return {
-            startDate: startOfWeek.toISOString().split('T')[0],
-            endDate: endOfWeek.toISOString().split('T')[0],
-        };
-    };
-
-    // Initialiser l'année et la semaine
+    // Récupérer les informations de la ligue et la semaine actuelle
     useEffect(() => {
-        const yearParam = searchParams.get('year') || '2025';
-        const weekParam = searchParams.get('week');
+        const fetchLeagueInfo = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/defis/league-info`);
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la récupération des informations de la ligue');
+                }
+                const data = await response.json();
+                setLeagueInfo(data);
 
-        setCurrentYear(yearParam);
+
+                // Initialiser la semaine actuelle à partir des données du serveur
+                if (!searchParams.get('week')) {
+                    setCurrentWeek(data.currentWeek);
+                    setSearchParams({ week: data.currentWeek.toString() });
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        };
+
+        fetchLeagueInfo();
+    }, []);
+
+    // Initialiser la semaine depuis les paramètres d'URL
+    useEffect(() => {
+        const weekParam = searchParams.get('week');
 
         if (weekParam) {
             const weekNumber = parseInt(weekParam, 10);
             if (weekNumber >= 1 && weekNumber <= 4) {
                 setCurrentWeek(weekNumber);
-            } else {
-                const actualWeek = calculateCurrentWeek(yearParam);
-                setSearchParams({ week: actualWeek.toString(), year: yearParam });
-                setCurrentWeek(actualWeek);
+            } else if (leagueInfo) {
+                // Si semaine invalide, utiliser la semaine actuelle du serveur
+                setSearchParams({week: leagueInfo.currentWeek.toString()});
+                setCurrentWeek(leagueInfo.currentWeek);
             }
-        } else {
-            const actualWeek = calculateCurrentWeek(yearParam);
-            setSearchParams({ week: actualWeek.toString(), year: yearParam });
-            setCurrentWeek(actualWeek);
         }
-    }, [searchParams, setSearchParams]);
+    }, [searchParams, leagueInfo]);
 
-    useEffect(() => {
-        setWeekDates(getWeeklyPeriod(currentWeek, currentYear));
-    }, [currentWeek, currentYear]);
-
+    // Récupérer les défis de la semaine
     useEffect(() => {
         const fetchDefis = async () => {
+            setIsLoading(true);
             try {
                 const url = new URL(`${API_BASE_URL}/api/defis`);
                 url.pathname += `/${activeTab}`;
                 url.searchParams.append('week', currentWeek.toString());
-                url.searchParams.append('year', currentYear);
 
                 const response = await fetch(url.toString(), {
                     method: 'GET',
@@ -116,36 +97,70 @@ const Defis: React.FC = () => {
                 }
 
                 const data = await response.json();
-                setDefis(Array.isArray(data) ? data : data.defis || []);
+                console.log('Defis:', data);
+
+                if (Array.isArray(data)) {
+                    setDefis(data);
+                    // Si les données incluent les dates de la semaine, les utiliser
+                    if (data.length > 0 && data[0].date_debut && data[0].date_fin) {
+                        setWeekDates({
+                            startDate: data[0].date_debut,
+                            endDate: data[0].date_fin
+                        });
+                    }
+                } else if (data.defis) {
+                    setDefis(data.defis);
+                    if (data.startDate && data.endDate) {
+                        setWeekDates({
+                            startDate: data.startDate,
+                            endDate: data.endDate
+                        });
+                    }
+                } else {
+                    setDefis([]);
+                }
             } catch (error) {
                 console.error('Erreur lors de la récupération des défis:', error);
                 setDefis([]);
+            } finally {
+                setIsLoading(false);
             }
         };
 
-        fetchDefis();
-    }, [activeTab, currentWeek, currentYear]);
+        if (currentWeek > 0) {
+            fetchDefis();
+        }
+    }, [activeTab, currentWeek]);
 
     const handlePreviousWeek = () => {
         const newWeek = Math.max(1, currentWeek - 1);
-        setSearchParams({ week: newWeek.toString(), year: currentYear });
+        setSearchParams({ week: newWeek.toString() });
         setCurrentWeek(newWeek);
     };
 
     const handleNextWeek = () => {
         const newWeek = Math.min(4, currentWeek + 1);
-        setSearchParams({ week: newWeek.toString(), year: currentYear });
+        setSearchParams({ week: newWeek.toString() });
         setCurrentWeek(newWeek);
+    };
+
+    // Formater l'affichage des points
+    const formatPoints = (defi: Defi) => {
+        if (defi.max_points && defi.max_points > defi.points) {
+            return `${defi.points}/${defi.max_points}`;
+        }
+        return defi.points;
     };
 
     return (
         <div className="defis-container">
             <div className="header-title">
                 <h1>Défis</h1>
-                <img src="/header_icon_defis.svg" alt="Icone défis" style={{height: 86}}/>
+                <img src="/header_icon_defis.svg" alt="Icone défis" style={{height: 42}}/>
             </div>
 
             <div className="week-navigation-column">
+                {/*
                 <div className="week-controls">
                     <button
                         onClick={handlePreviousWeek}
@@ -168,6 +183,7 @@ const Defis: React.FC = () => {
                         Du {weekDates.startDate} au {weekDates.endDate}
                     </span>
                 </div>
+                */}
             </div>
 
             <div className="decorative-line">
@@ -175,6 +191,12 @@ const Defis: React.FC = () => {
             </div>
 
             <div className="panel-tabs">
+                <span
+                    className={`tab ${activeTab === 'defi_semaine' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('defi_semaine')}
+                >
+                    Défis
+                </span>
                 <span
                     className={`tab ${activeTab === 'arene' ? 'active' : ''}`}
                     onClick={() => setActiveTab('arene')}
@@ -187,12 +209,6 @@ const Defis: React.FC = () => {
                 >
                     Quêtes
                 </span>
-                <span
-                    className={`tab ${activeTab === 'defi_semaine' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('defi_semaine')}
-                >
-                    Défis de la semaine
-                </span>
             </div>
 
             <div className="defis-content">
@@ -201,16 +217,19 @@ const Defis: React.FC = () => {
                         Relevez ces défis hebdomadaires uniques qui changent à chaque semaine !
                     </div>
                 )}
-                {defis.length === 0 ? (
+
+                {isLoading ? (
+                    <div className="no-defis">Chargement des défis...</div>
+                ) : defis.length === 0 ? (
                     <div className="no-defis">Aucun défi disponible pour le moment</div>
                 ) : (
                     defis.map((defi) => (
-                        <div key={defi.id} className="defi-item">
+                        <div key={defi.id} className={`defi-item ${defi.completed ? 'completed' : ''}`}>
                             <div style={{display: 'flex', flexDirection: 'column'}}>
-                                <h2>{defi.nom}</h2>
+                                <h3>{defi.nom}</h3>
                                 <p>{defi.description}</p>
                             </div>
-                            <div className="points">
+                            <div className="points" style={{margin: 14}}>
                                 {defi.points_type === 'fixed' ? (
                                     <img
                                         src={'./defi_fixed.svg'}
@@ -230,13 +249,29 @@ const Defis: React.FC = () => {
                                     className="points-value"
                                     style={{
                                         position: 'absolute',
-                                        marginLeft: defi.points_type === 'fixed' ? 13 : 23,
+                                        marginLeft: defi.points_type === 'fixed' ? 14 : 23,
                                         fontSize: '1.6em'
                                     }}
                                 >
-                                    {defi.points}
+                                    {formatPoints(defi)}
                                 </span>
                             </div>
+                            {defi.completed && (
+                                <div className="completed-badge" style={{
+                                    position: 'absolute',
+                                    top: '10px',
+                                    right: '10px',
+                                    width: '24px',
+                                    height: '24px',
+                                    background: 'rgba(46, 204, 113, 0.8)',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    <span style={{color: 'white', fontSize: '14px'}}>✓</span>
+                                </div>
+                            )}
                         </div>
                     ))
                 )}

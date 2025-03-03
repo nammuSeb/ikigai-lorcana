@@ -11,6 +11,7 @@ interface Player {
     nickname: string;
     pointsByDay: number[];
     totalPoints?: number;
+    argent?: number;
 }
 
 interface WeekRange {
@@ -30,7 +31,7 @@ const Leaderboard: React.FC = () => {
 
     // Calculer la semaine actuelle en fonction de la date
     const calculateCurrentWeek = (): number => {
-        const leagueStart = new Date('2024-11-16');
+        const leagueStart = new Date('2024-11-11');
         const now = new Date();
         const diffTime = now.getTime() - leagueStart.getTime();
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -86,7 +87,7 @@ const Leaderboard: React.FC = () => {
 
     useEffect(() => {
         const getCurrentWeekDates = (weekNumber: number): WeekRange => {
-            const leagueStart = new Date('2024-11-16');
+            const leagueStart = new Date('2024-11-11');
 
             const startOfWeek = new Date(leagueStart);
             startOfWeek.setDate(startOfWeek.getDate() + (7 * (weekNumber - 1)));
@@ -223,7 +224,7 @@ const Leaderboard: React.FC = () => {
                 </div>
                 <div className="toggle-container">
                     <label className="toggle-label">
-                    <input
+                        <input
                             type="checkbox"
                             checked={hideInactivePlayers}
                             onChange={toggleInactivePlayers}
@@ -243,50 +244,42 @@ const Leaderboard: React.FC = () => {
                     <div className="player" key={index}>
                         <Link to={`/membre/${player.pseudo}`}>
                             <div className="player-info">
-                                <div className="player-name-container">
-                                    <div className="player-name">
-                                        {index + 1}. <span style={{color: '#fff'}}>{player.pseudo}</span>
+                                <div className="player-main-row">
+                                    <div className="player-rank-name">
+                                        <span className="player-rank">{index + 1}.</span>
+                                        <span className="player-pseudo">{player.pseudo}</span>
                                     </div>
-                                    {player.nickname && (
-                                        <div className="player-nickname">
-                                            {player.nickname}
-                                        </div>
-                                    )}
+                                    <div className="player-money">
+                                        <span className="money-amount">{player.argent}</span>
+                                        <img
+                                            src="/header_icon_flouze.svg"
+                                            alt="Flouze"
+                                            className="money-icon"
+                                        />
+                                    </div>
                                 </div>
+                                {player.nickname && (
+                                    <div className="player-nickname">
+                                        {player.nickname}
+                                    </div>
+                                )}
                             </div>
                             <div className="player-points">
                                 <div className="points-row">
-                                    {Array.from({length: 5}).map((_, i) => (
-                                        <div key={i} className="point-wrapper" style={{height: 36, width: 36}}>
+                                    {Array.from({length: 10}).map((_, i) => (
+                                        <div key={i} className="point-wrapper" style={{height: 24, width: 24}}>
                                             {i < player.totalPoints! ? (
                                                 <img
                                                     src={'./point_yes.svg'}
                                                     alt="point icon"
                                                     style={{
                                                         transform: `rotate(${Math.floor(Math.random() * 360)}deg)`,
+                                                        height: 24, width: 24,
                                                     }}
                                                     className="point-icon"
                                                 />
                                             ) : (
-                                                <div className="point_no"></div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="points-row">
-                                    {Array.from({length: 5}).map((_, i) => (
-                                        <div key={i + 5} className="point-wrapper" style={{height: 36, width: 36}}>
-                                            {i + 5 < player.totalPoints! ? (
-                                                <img
-                                                    src={'./point_yes.svg'}
-                                                    alt="point icon"
-                                                    style={{
-                                                        transform: `rotate(${Math.floor(Math.random() * 360)}deg)`,
-                                                    }}
-                                                    className="point-icon"
-                                                />
-                                            ) : (
-                                                <div className="point_no"></div>
+                                                <div className="point_no" style={{height: 24, width: 24}}></div>
                                             )}
                                         </div>
                                     ))}

@@ -30,8 +30,18 @@ body {
   min-height: 100vh;
 }
 
+
+select {
+  padding: 4px;
+  border: 1px solid rgba(189, 195, 199, 0.2);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3) !important;
+  color: white;
+  font-size: 1em;
+}
+
 h1 {
-  font-size: 3.2em;
+  font-size: 2.2em;
   line-height: 1.1;
 }
 
@@ -66,3 +76,43 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+/* À ajouter à votre fichier CSS principal (par exemple App.css) */
+
+/* Style pour la bannière d'installation */
+.install-banner {
+  position: fixed;
+  bottom: 70px; /* Au-dessus du menu */
+  left: 0;
+  right: 0;
+  background-color: rgba(36, 43, 67, 0.95);
+  color: #fff;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.install-banner p {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+.install-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.install-button {
+  background-color: #50a5ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size
