@@ -242,7 +242,7 @@ const Leaderboard: React.FC = () => {
             ) : (
                 filteredPlayers.map((player, index) => (
                     <div className="player" key={index}>
-                        <Link to={`/membre/${player.pseudo}`}>
+                        <Link >
                             <div className="player-info">
                                 <div className="player-main-row">
                                     <div className="player-rank-name">

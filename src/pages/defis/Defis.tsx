@@ -10,6 +10,7 @@ interface Defi {
     description: string;
     points: number;
     points_type: string;
+    type: string;
     max_points?: number | null;
     completed?: boolean;
 }
@@ -45,11 +46,10 @@ const Defis: React.FC = () => {
                 const data = await response.json();
                 setLeagueInfo(data);
 
-
                 // Initialiser la semaine actuelle à partir des données du serveur
                 if (!searchParams.get('week')) {
-                    setCurrentWeek(data.currentWeek);
-                    setSearchParams({ week: data.currentWeek.toString() });
+                    setCurrentWeek(data.currentWeek || 1);
+                    setSearchParams({ week: (data.currentWeek || 1).toString() });
                 }
             } catch (error) {
                 console.error('Erreur:', error);
@@ -67,22 +67,25 @@ const Defis: React.FC = () => {
             const weekNumber = parseInt(weekParam, 10);
             if (weekNumber >= 1 && weekNumber <= 4) {
                 setCurrentWeek(weekNumber);
-            } else if (leagueInfo) {
+            } else if (leagueInfo && leagueInfo.currentWeek) {
                 // Si semaine invalide, utiliser la semaine actuelle du serveur
                 setSearchParams({week: leagueInfo.currentWeek.toString()});
                 setCurrentWeek(leagueInfo.currentWeek);
+            } else {
+                // Fallback à la semaine 1 si pas d'info de ligue
+                setSearchParams({week: '1'});
+                setCurrentWeek(1);
             }
         }
     }, [searchParams, leagueInfo]);
 
-    // Récupérer les défis de la semaine
+    // Récupérer les défis selon le type sélectionné
     useEffect(() => {
         const fetchDefis = async () => {
             setIsLoading(true);
             try {
                 const url = new URL(`${API_BASE_URL}/api/defis`);
                 url.pathname += `/${activeTab}`;
-                url.searchParams.append('week', currentWeek.toString());
 
                 const response = await fetch(url.toString(), {
                     method: 'GET',
@@ -97,40 +100,28 @@ const Defis: React.FC = () => {
                 }
 
                 const data = await response.json();
-                console.log('Defis:', data);
+                console.log(`${activeTab} data:`, data);
 
                 if (Array.isArray(data)) {
+                    // Handle legacy response format (ancienne structure)
                     setDefis(data);
-                    // Si les données incluent les dates de la semaine, les utiliser
-                    if (data.length > 0 && data[0].date_debut && data[0].date_fin) {
-                        setWeekDates({
-                            startDate: data[0].date_debut,
-                            endDate: data[0].date_fin
-                        });
-                    }
-                } else if (data.defis) {
+                } else if (data.defis && Array.isArray(data.defis)) {
+                    // Handle new response format (nouvelle structure)
                     setDefis(data.defis);
-                    if (data.startDate && data.endDate) {
-                        setWeekDates({
-                            startDate: data.startDate,
-                            endDate: data.endDate
-                        });
-                    }
                 } else {
+                    // Aucun défi trouvé
                     setDefis([]);
                 }
             } catch (error) {
-                console.error('Erreur lors de la récupération des défis:', error);
+                console.error(`Erreur lors de la récupération des ${activeTab}:`, error);
                 setDefis([]);
             } finally {
                 setIsLoading(false);
             }
         };
 
-        if (currentWeek > 0) {
-            fetchDefis();
-        }
-    }, [activeTab, currentWeek]);
+        fetchDefis();
+    }, [activeTab]);
 
     const handlePreviousWeek = () => {
         const newWeek = Math.max(1, currentWeek - 1);
@@ -150,6 +141,29 @@ const Defis: React.FC = () => {
             return `${defi.points}/${defi.max_points}`;
         }
         return defi.points;
+    };
+
+    // Obtenir le texte explicatif pour chaque type de défi
+    const getInfoBoxText = () => {
+        switch (activeTab) {
+            case 'defi_semaine':
+                return 'Relevez ces défis hebdomadaires uniques qui changent à chaque semaine !';
+            case 'arene':
+                return 'Affrontez d\'autres joueurs dans l\'arène pour gagner des points !';
+            case 'quete':
+                return 'Accomplissez ces quêtes pour gagner des points bonus à utiliser quand vous voulez !';
+            default:
+                return '';
+        }
+    };
+
+    // Obtenir l'icône de points appropriée
+    const getPointsIcon = (defi: Defi) => {
+        if (activeTab === 'defi_semaine' || activeTab === 'arene' || defi.points_type === 'fixed') {
+            return './defi_fixed.svg';
+        } else {
+            return './defi_flex.svg';
+        }
     };
 
     return (
@@ -212,11 +226,9 @@ const Defis: React.FC = () => {
             </div>
 
             <div className="defis-content">
-                {activeTab === 'defi_semaine' && (
-                    <div className="info-box">
-                        Relevez ces défis hebdomadaires uniques qui changent à chaque semaine !
-                    </div>
-                )}
+                <div className="info-box">
+                    {getInfoBoxText()}
+                </div>
 
                 {isLoading ? (
                     <div className="no-defis">Chargement des défis...</div>
@@ -230,21 +242,12 @@ const Defis: React.FC = () => {
                                 <p>{defi.description}</p>
                             </div>
                             <div className="points" style={{margin: 14}}>
-                                {defi.points_type === 'fixed' ? (
-                                    <img
-                                        src={'./defi_fixed.svg'}
-                                        style={{height: 46}}
-                                        alt="Icone des points"
-                                        className="points-icon"
-                                    />
-                                ) : (
-                                    <img
-                                        src={'./defi_flex.svg'}
-                                        style={{height: 52}}
-                                        alt="Icone des points"
-                                        className="points-icon"
-                                    />
-                                )}
+                                <img
+                                    src={getPointsIcon(defi)}
+                                    style={{height: defi.points_type === 'fixed' ? 46 : 52}}
+                                    alt="Icone des points"
+                                    className="points-icon"
+                                />
                                 <span
                                     className="points-value"
                                     style={{
@@ -277,21 +280,13 @@ const Defis: React.FC = () => {
                 )}
             </div>
 
-            {activeTab === 'arene' && (
-                <p className="info-note">
-                    <img src="defi_fixed.svg" alt="icon" style={{height: 24}}/> = Point(s) pour la semaine en cours uniquement
-                </p>
-            )}
-            {activeTab === 'quete' && (
-                <p className="info-note">
-                    <img src="defi_flex.svg" alt="icon" style={{height: 24}}/> = Point(s) à mettre sur la semaine de votre choix !
-                </p>
-            )}
-            {activeTab === 'defi_semaine' && (
-                <p className="info-note">
-                    <img src="defi_fixed.svg" alt="icon" style={{height: 24}}/> = Point(s) pour la semaine en cours uniquement
-                </p>
-            )}
+            <p className="info-note">
+                {activeTab === 'quete' ? (
+                    <><img src="defi_flex.svg" alt="icon" style={{height: 24}}/> = Point(s) à mettre sur la semaine de votre choix !</>
+                ) : (
+                    <><img src="defi_fixed.svg" alt="icon" style={{height: 24}}/> = Point(s) pour la semaine en cours uniquement</>
+                )}
+            </p>
         </div>
     );
 };

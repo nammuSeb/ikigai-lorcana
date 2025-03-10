@@ -39,7 +39,7 @@ const LoreCounter: React.FC = () => {
         score: 0,
         name: "Joueur 2",
         color: "#cd5c5c", // Rouge indien
-        inkCurrent: 3,
+        inkCurrent: 0,
         timeRemaining: 600,
         turnTimeRemaining: 30
     });

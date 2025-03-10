@@ -34,11 +34,13 @@ const Menu: React.FC = () => {
                 </Link>
             </div>
             */}
+            {/*
             <div className={`menu-item ${location.pathname === '/lore' ? 'footer-item-focus' : ''}`}>
                 <Link to="/lore">
                     <img src="/menu_icon_compteur.svg" alt="bouton compteur" />
                 </Link>
             </div>
+            */}
 
         </footer>
     );
