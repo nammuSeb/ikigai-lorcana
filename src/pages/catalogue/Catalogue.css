@@ -1,8 +1,9 @@
-
 .catalogue-container {
     color: white;
     padding: 20px;
     min-height: 100vh;
+    max-width: 90%;
+    margin: 0 auto;
 }
 
 .header-title {
@@ -19,10 +20,31 @@
     margin: 10px 0;
 }
 
+.catalogue-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
 .catalogue-description {
     text-align: center;
     color: #bdc3c7;
     margin-bottom: 20px;
+}
+
+/* Stats */
+.catalogue-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+    color: #bdc3c7;
+    max-width: 100%;
 }
 
 /* Grille de cartes - version mobile (2 cartes par ligne) */
@@ -31,7 +53,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding: 20px 0;
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -96,6 +118,12 @@
     margin-top: 8px;
 }
 
+.card-details-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .card-price {
     display: flex;
     align-items: center;
@@ -106,7 +134,7 @@
 /* Stock indicator */
 .stock {
     position: absolute;
-    top: 64px;
+    top: 10px;
     right: 10px;
     width: 32px;
     height: 32px;
@@ -184,7 +212,7 @@
     max-height: 0;
     padding: 0;
     opacity: 0;
-    max-width: 1400px;
+    max-width: 100%;
 }
 
 .filter-controls.show {
@@ -262,12 +290,48 @@
     font-weight: normal;
 }
 
+/* État de chargement */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: #bdc3c7;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(52, 152, 219, 0.3);
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Aucun résultat */
+.no-results {
+    text-align: center;
+    padding: 30px;
+    color: #bdc3c7;
+}
+
 /* Breakpoints pour différentes tailles d'écran */
 /* Tablette (3 cartes par ligne) */
 @media screen and (min-width: 768px) {
     .catalogue-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 25px;
+    }
+
+    .filter-controls {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -277,6 +341,10 @@
         grid-template-columns: repeat(4, 1fr);
         gap: 25px;
         padding: 25px 0;
+    }
+
+    .catalogue-container {
+        max-width: 90%;
     }
 }
 
@@ -292,5 +360,36 @@
     .catalogue-grid {
         grid-template-columns: repeat(6, 1fr);
         gap: 30px;
+    }
+}
+
+/* Optimisation pour mobile */
+@media screen and (max-width: 480px) {
+    .filter-controls {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .catalogue-stats {
+        font-size: 0.8rem;
+    }
+
+    .stock {
+        top: 10px;
+        right: 10px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+
+    .catalogue-container {
+        padding: 10px;
+        max-width: 95%;
+    }
+
+    .close-button {
+        top: -30px;
+        right: -10px;
+        font-size: 1.5rem;
     }
 }

@@ -103,7 +103,7 @@ const FilterControls: React.FC<FilterProps> = ({filters, setFilters, series, cla
                     checked={filters.stockFirst}
                     onChange={(e) => setFilters({...filters, stockFirst: e.target.checked})}
                 />
-                Afficher les cartes disponibles en premier
+                <span>Disponibles en premier</span>
             </label>
         </div>
     </div>
@@ -113,7 +113,7 @@ const Catalogue: React.FC = () => {
     const [cards, setCards] = useState<Card[]>([]);
     const [filteredCards, setFilteredCards] = useState<Card[]>([]);
     const [selectedCard, setSelectedCard] = useState<Card | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [showFilters, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         numero: '',
@@ -121,17 +121,22 @@ const Catalogue: React.FC = () => {
         langue: '',
         foil: '',
         sortOrder: 'asc',
-        stockFirst: true // Par défaut, afficher les cartes disponibles en premier
+        stockFirst: true
     });
 
     useEffect(() => {
+        setIsLoading(true);
         fetch(`${API_BASE_URL}/api/catalogue`)
             .then((response) => response.json())
             .then((data) => {
                 setCards(data);
                 setFilteredCards(data);
+                setIsLoading(false);
             })
-            .catch((error) => console.error('Erreur lors de la récupération du catalogue:', error));
+            .catch((error) => {
+                console.error('Erreur lors de la récupération du catalogue:', error);
+                setIsLoading(false);
+            });
     }, []);
 
     useEffect(() => {
@@ -196,11 +201,11 @@ const Catalogue: React.FC = () => {
                 <div className="center-decor"></div>
             </div>
 
-            <p className="catalogue-description">
-                Voici le catalogue des prix que vous pouvez échanger contre vos Flouzeborn.
-            </p>
+            <div className="catalogue-controls">
+                <p className="catalogue-description">
+                    Voici le catalogue des prix que vous pouvez échanger contre vos Flouzeborn.
+                </p>
 
-            <div style={{display: 'flex', justifyContent: 'center'}}>
                 <button
                     onClick={() => setShowFilters(!showFilters)}
                     className="toggle-filters-btn"
@@ -216,63 +221,99 @@ const Catalogue: React.FC = () => {
                 className={showFilters ? 'show' : ''}
             />
 
-            <div className="catalogue-grid">
-                {filteredCards.map((card) => (
-                    <div
-                        key={card.id}
-                        className={`catalogue-card ${card.stock < 1 ? 'sold-out' : ''}`}
-                        onClick={() => setSelectedCard(card)}
-                    >
-                        <div className="card-info">
-                            <div className="card-header">
-                                <h5 className="card-name">{card.nom}</h5>
-                                {card.sous_titre && (
-                                    <span className="card-subtitle">{card.sous_titre}</span>
-                                )}
-                            </div>
-                        </div>
-
-                        {card.stock > 0 && <div className="stock">{card.stock}</div>}
-
-                        <img
-                            src={formatCardImageUrl(card)}
-                            alt={card.nom}
-                            className="card-image"
-                            loading="lazy"
-                        />
-
-                        <div className="card-info">
-                            <div className="card-series">
-                                {card.serie} - {card.numero}
-                            </div>
-                            <div className="card-details">
-                                <span className="card-language">
-                                    <img
-                                        src={`./language_${card.langue}.png`}
-                                        alt={`Icone ${card.langue}`}
-                                        style={{width: 26}}
-                                    />
-                                </span>
-                                {card.foil > 0 && (
-                                    <span>
-                                        <img src="./foil.svg" alt="foil" style={{width: 24}}/>
-                                    </span>
-                                )}
-                                <span className="card-price">
-                                    <span>{formatPrice(card.prix)}</span>
-                                    &nbsp;
-                                    <img
-                                        src="./header_icon_flouze.svg"
-                                        alt="Icone flouze"
-                                        style={{height: 32}}
-                                    />
-                                </span>
-                            </div>
-                        </div>
-                        {card.stock < 1 && <div className="sold-overlay">Vendue !</div>}
+            {isLoading ? (
+                <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p>Chargement du catalogue...</p>
+                </div>
+            ) : (
+                <>
+                    <div className="catalogue-stats">
+                        <span>{filteredCards.length} cartes</span>
+                        <span>
+                            {filteredCards.filter(card => card.stock > 0).length} disponibles
+                        </span>
                     </div>
-                ))}
-            </div>
+
+                    <div className="catalogue-grid">
+                        {filteredCards.map((card) => (
+                            <div
+                                key={card.id}
+                                className={`catalogue-card ${card.stock < 1 ? 'sold-out' : ''}`}
+                                onClick={() => setSelectedCard(card)}
+                            >
+                                {card.stock > 0 && <div className="stock">{card.stock}</div>}
+
+                                <img
+                                    src={formatCardImageUrl(card)}
+                                    alt={card.nom}
+                                    className="card-image"
+                                    loading="lazy"
+                                />
+
+                                <div className="card-info">
+                                    <div className="card-header">
+                                        <h5 className="card-name">{card.nom}</h5>
+                                        {card.sous_titre && (
+                                            <span className="card-subtitle">{card.sous_titre}</span>
+                                        )}
+                                    </div>
+
+                                    <div className="card-series">
+                                        {card.serie} - {card.numero}
+                                    </div>
+
+                                    <div className="card-details">
+                                        <div className="card-details-left">
+                                            <span className="card-language">
+                                                <img
+                                                    src={`./language_${card.langue}.png`}
+                                                    alt={`Icone ${card.langue}`}
+                                                    style={{width: 26}}
+                                                />
+                                            </span>
+                                            {card.foil > 0 && (
+                                                <span>
+                                                    <img src="./foil.svg" alt="foil" style={{width: 24}}/>
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className="card-price">
+                                            <span>{formatPrice(card.prix)}</span>
+                                            &nbsp;
+                                            <img
+                                                src="./header_icon_flouze.svg"
+                                                alt="Icone flouze"
+                                                style={{height: 32}}
+                                            />
+                                        </span>
+                                    </div>
+                                </div>
+                                {card.stock < 1 && <div className="sold-overlay">Vendue !</div>}
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
+
+            {filteredCards.length === 0 && !isLoading && (
+                <div className="no-results">
+                    <p>Aucune carte ne correspond à vos critères de recherche.</p>
+                    <button
+                        onClick={() => setFilters({
+                            numero: '',
+                            serie: '',
+                            langue: '',
+                            foil: '',
+                            sortOrder: 'asc',
+                            stockFirst: true
+                        })}
+                        className="toggle-filters-btn"
+                    >
+                        Réinitialiser les filtres
+                    </button>
+                </div>
+            )}
 
             {selectedCard && (
                 <div className="modal-overlay" onClick={() => setSelectedCard(null)}>

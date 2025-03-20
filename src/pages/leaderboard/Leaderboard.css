@@ -3,6 +3,203 @@
     flex-direction: column;
     align-items: center;
     border-radius: 8px;
+    color: white;
+}
+
+/* Week navigation */
+.week-navigation-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.week-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.week-controls button {
+    background: rgba(157, 142, 115, 0.3);
+    color: #f5e9cd;
+    border: 1px solid #f1ecc8;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.week-controls button:hover:not(.disabled) {
+    background: rgba(157, 142, 115, 0.6);
+}
+
+.week-controls button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.semaine-name {
+    font-weight: bold;
+    color: #f1ecc8;
+    text-transform: uppercase;
+    padding: 10px;
+    font-size: 1.6em;
+}
+
+.week-dates {
+    text-align: center;
+    color: #f5e9cd;
+    margin-bottom: 10px;
+}
+
+/* Progress bar */
+.progress {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+    border: 1px solid #f1ecc8;
+}
+
+.progress-bar {
+    background: linear-gradient(45deg, #9d8e73, #c4b599) !important;
+    color: #1a1b26;
+    font-weight: bold;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.bg-info {
+    background-color: #9d8e73 !important;
+}
+
+.progress-bar {
+    background-color: initial !important; /* Supprime la couleur de fond imposée par Bootstrap */
+}
+
+.progress-bar.progress-bar-striped {
+    background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+}
+
+.progress-bar.progress-bar-animated {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+    from { background-position: 1rem 0; }
+    to { background-position: 0 0; }
+}
+
+/* Filters */
+.filters-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(157, 142, 115, 0.3);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #9d8e73;
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 10px rgba(157, 142, 115, 0.2);
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input:focus::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.toggle-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.toggle-input {
+    appearance: none;
+    width: 50px;
+    height: 26px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 13px;
+    position: relative;
+    cursor: pointer;
+    border: 2px solid rgba(157, 142, 115, 0.3);
+    transition: all 0.3s ease;
+}
+
+.toggle-input:checked {
+    background-color: #9d8e73;
+    border-color: #9d8e73;
+}
+
+.toggle-input::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.3s ease;
+}
+
+.toggle-input:checked::before {
+    transform: translateX(24px);
+}
+
+.toggle-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    user-select: none;
+}
+
+/* Player card */
+.player {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 16px 0px;
+    position: relative;
+}
+
+.player a {
+    width: 100%;
+}
+
+.player::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, rgba(241, 236, 200, 0), #f1ecc8, rgba(241, 236, 200, 0));
 }
 
 .player-info {
@@ -74,54 +271,12 @@
     text-overflow: ellipsis;
 }
 
-.player {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    padding: 16px 0px;
-    position: relative;
-}
-.player a {
-    width: 100%;
-}
-
-.player::after {
-    content: '';
-    position: absolute;
-    bottom: 0; /* Place la ligne en bas */
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(to right, rgba(241, 236, 200, 0), #f1ecc8, rgba(241, 236, 200, 0));
-}
-
-
-
-.player-points {
-    font-size: 0.9em;
-    color: #ffffff;
-    text-align: right;
-}
-
-.player hr {
-    border: none;
-    border-top: 1px solid #ddd; /* Couleur et épaisseur de la ligne */
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
+/* Player points */
 .player-points {
     width: 100%;
-    display: flex;
-    justify-content: space-around;
-    gap: 10px; /* Espacement entre les pastilles */
-    margin-top: 10px;
-}
-
-.player-points {
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
 }
 
 .points-row {
@@ -133,127 +288,84 @@
     margin: 2px;
 }
 
-.semaine-name {
-    font-weight: bold;
-    color: #f1ecc8;
-    text-transform: uppercase;
-    padding: 10px;
-    font-size: 1.6em;
-}
-
-.progress {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 20px 0;
-    border: 1px solid #f1ecc8;
-}
-
-.progress-bar {
-    background: linear-gradient(45deg, #9d8e73, #c4b599) !important;
-    color: #1a1b26;
-    font-weight: bold;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
-}
-
-.bg-info {
-    background-color: #9d8e73 !important;
-}
-
-.progress-bar {
-    background-color: initial !important; /* Supprime la couleur de fond imposée par Bootstrap */
-}
-
-.progress-bar.progress-bar-striped {
-    background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
-    background-size: 1rem 1rem;
-}
-
-.progress-bar.progress-bar-animated {
-    animation: progress-bar-stripes 1s linear infinite;
-}
-
-/* Ajoutez ces styles à votre fichier Leaderboard.css existant */
-
-.search-container {
-    max-width: 600px;
-}
-
-.search-input {
-    width: 100%;
-    padding: 12px 20px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(157, 142, 115, 0.3);
-    border-radius: 10px;
-    transition: all 0.3s ease;
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: #9d8e73;
-    background-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 10px rgba(157, 142, 115, 0.2);
-}
-
-.search-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-/* Style pour l'état actif */
-.search-input:focus::placeholder {
-    color: rgba(255, 255, 255, 0.3);
-}
-
-.toggle-container {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.toggle-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-}
-
-.toggle-input {
-    appearance: none;
-    width: 50px;
-    height: 26px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 13px;
-    position: relative;
-    cursor: pointer;
-    border: 2px solid rgba(157, 142, 115, 0.3);
-    transition: all 0.3s ease;
-}
-
-.toggle-input:checked {
-    background-color: #9d8e73;
-    border-color: #9d8e73;
-}
-
-.toggle-input::before {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
+.point_no {
+    border: 1px dashed rgba(241, 236, 200, 0.3);
     border-radius: 50%;
-    background-color: #fff;
-    top: 1px;
-    left: 1px;
-    transition: transform 0.3s ease;
 }
 
-.toggle-input:checked::before {
-    transform: translateX(24px);
+/* Loading state */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: #f5e9cd;
 }
 
-.toggle-text {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
-    user-select: none;
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(241, 236, 200, 0.3);
+    border-top: 3px solid #f1ecc8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
 }
 
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* No results state */
+.no-results {
+    text-align: center;
+    padding: 30px;
+    color: #f5e9cd;
+    font-weight: 500;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 767px) {
+    .player-pseudo {
+        font-size: 1.2em;
+    }
+
+    .money-icon {
+        height: 22px;
+    }
+
+    .semaine-name {
+        font-size: 1.3em;
+    }
+}
+
+@media (max-width: 480px) {
+    .player {
+        padding: 12px 0;
+    }
+
+    .point-wrapper {
+        height: 20px !important;
+        width: 20px !important;
+    }
+
+    .point-icon {
+        height: 20px !important;
+        width: 20px !important;
+    }
+
+    .week-controls button {
+        padding: 3px 10px;
+    }
+
+    .toggle-text {
+        font-size: 0.8rem;
+    }
+}
